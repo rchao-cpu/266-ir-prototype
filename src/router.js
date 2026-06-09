@@ -110,7 +110,12 @@ function matchRoute(path) {
   if (!app) return null;
   const subPath = stripAppPrefix(path, app);
 
-  for (const route of routes) {
+  const candidates = [
+    ...routes.filter((r) => r.app === app.id),
+    ...routes.filter((r) => !r.app),
+  ];
+
+  for (const route of candidates) {
     const keys = [];
     const pattern = route.path.replace(/:([^/]+)/g, (_match, paramName) => {
       keys.push(paramName);

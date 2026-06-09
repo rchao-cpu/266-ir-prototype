@@ -13,6 +13,7 @@ import Home from 'page/home';
 import IconTest from 'page/iconTest';
 import Contacts from 'page/contacts';
 import ContactDetail from 'page/contactDetail';
+import Builder from 'page/builder';
 import NotFound from 'page/notFound';
 
 /** Option A: explicit registration – add one import + one entry here when adding a route */
@@ -21,6 +22,7 @@ const ROUTE_COMPONENTS = {
     'page-icon-test': IconTest,
     'page-contacts': Contacts,
     'page-contact-detail': ContactDetail,
+    'page-builder': Builder,
 };
 
 /** Derived from routes.config: component name → nav page id (includes navHighlight for child routes) */
@@ -66,6 +68,10 @@ export default class App extends LightningElement {
     get currentAppVariant() {
         const app = getAppById(this._currentApp) || getAppById(DEFAULT_APP_ID);
         return app?.variant ?? 'standard';
+    }
+
+    get isBuilderApp() {
+        return this.currentAppVariant === 'builder';
     }
 
     /** Pages exposed in the current app's primary nav (Standard tabs). */
@@ -116,7 +122,12 @@ export default class App extends LightningElement {
                 persistAppId(newApp);
                 setCurrentAppForLinks(newApp);
             }
+            this._syncBuilderRootClass();
         });
+    }
+
+    _syncBuilderRootClass() {
+        document.documentElement.classList.toggle('builder-active', this.isBuilderApp);
     }
 
     _restorePreferences() {
@@ -134,6 +145,7 @@ export default class App extends LightningElement {
 
     disconnectedCallback() {
         this.unsubscribe?.();
+        document.documentElement.classList.remove('builder-active');
     }
 
     async handleToggleSLDS() {
@@ -166,6 +178,15 @@ export default class App extends LightningElement {
         this._currentApp = appId;
         persistAppId(appId);
         setCurrentAppForLinks(appId);
+        navigate(target.defaultPath);
+    }
+
+    handleBuilderExit() {
+        const target = getAppById(DEFAULT_APP_ID);
+        if (!target) return;
+        this._currentApp = target.id;
+        persistAppId(target.id);
+        setCurrentAppForLinks(target.id);
         navigate(target.defaultPath);
     }
 

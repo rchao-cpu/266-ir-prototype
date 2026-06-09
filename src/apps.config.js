@@ -34,6 +34,14 @@ export const apps = [
     defaultPath: '/console',
     pages: ['home', 'icons', 'contacts'],
   },
+  {
+    id: 'builder',
+    label: 'Builder',
+    variant: 'builder',
+    pathPrefix: '/builder',
+    defaultPath: '/builder',
+    pages: [],
+  },
 ];
 
 export const DEFAULT_APP_ID = 'standard';

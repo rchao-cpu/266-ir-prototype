@@ -40,4 +40,10 @@ export const routes = [
     title: (params) => `Contact ${params.id}`,
     navHighlight: 'contacts',
   },
+  {
+    path: '/',
+    component: 'page-builder',
+    title: 'Builder',
+    app: 'builder',
+  },
 ];

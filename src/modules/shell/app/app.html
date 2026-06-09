@@ -1,4 +1,9 @@
 <template>
+    <template lwc:if={isBuilderApp}>
+        <lwc:component lwc:is={componentCtor} onbuilderexit={handleBuilderExit}></lwc:component>
+    </template>
+
+    <template lwc:else>
     <!-- Global shell: top, edge to edge, height by content -->
     <shell-global-shell
         current-page={currentNavPage}
@@ -35,4 +40,5 @@
             </lightning-layout-item>
         </lightning-layout>
     </main>
+    </template>
 </template>
