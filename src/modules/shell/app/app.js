@@ -14,6 +14,7 @@ import IconTest from 'page/iconTest';
 import Contacts from 'page/contacts';
 import ContactDetail from 'page/contactDetail';
 import Builder from 'page/builder';
+import Ir266 from 'page/ir266';
 import NotFound from 'page/notFound';
 
 /** Option A: explicit registration – add one import + one entry here when adding a route */
@@ -23,6 +24,7 @@ const ROUTE_COMPONENTS = {
     'page-contacts': Contacts,
     'page-contact-detail': ContactDetail,
     'page-builder': Builder,
+    'page-ir266': Ir266,
 };
 
 /** Derived from routes.config: component name → nav page id (includes navHighlight for child routes) */

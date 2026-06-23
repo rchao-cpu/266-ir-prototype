@@ -24,7 +24,7 @@ export const apps = [
     variant: 'standard',
     pathPrefix: '/app',
     defaultPath: '/app',
-    pages: ['home', 'icons', 'contacts'],
+    pages: ['home', 'icons', 'contacts', 'ir266'],
   },
   {
     id: 'console',

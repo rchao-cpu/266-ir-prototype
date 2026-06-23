@@ -1,0 +1,37 @@
+/* Chat FAB Styling */
+.chat-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.chat-fab:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Full height docked composer */
+.slds-docked-composer {
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure layout doesn't break */
+.slds-button_stretch {
+    width: 100%;
+}
+
+/* Route selection cards */
+.route-card {
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.route-card:hover {
+    border-color: #0176D3;
+    box-shadow: 0 4px 12px rgba(1, 118, 211, 0.2);
+    transform: translateY(-2px);
+}

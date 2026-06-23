@@ -46,4 +46,11 @@ export const routes = [
     title: 'Builder',
     app: 'builder',
   },
+  {
+    path: '/ir266',
+    component: 'page-ir266',
+    title: 'IR 266 - Identity Resolution',
+    navPage: 'ir266',
+    navLabel: 'IR 266',
+  },
 ];
