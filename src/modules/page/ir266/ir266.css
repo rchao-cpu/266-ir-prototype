@@ -1,3 +1,167 @@
+/* Step Navigation Column */
+.step-nav-column {
+    background-color: #fafaf9;
+    padding: 1rem;
+    width: 320px;
+    flex: 0 0 320px;
+}
+
+/* Main Content Area */
+.main-content-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.step-nav-header {
+    margin-bottom: 1.5rem;
+}
+
+.step-section-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0176d3;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+/* Step Cards */
+.step-card {
+    background-color: #ffffff;
+    border: 2px solid #c9c7c5;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.step-card:hover {
+    border-color: #0176d3;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.step-card-active {
+    background-color: #ffffff;
+    border: 2px solid #0176d3;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.2);
+}
+
+.step-card-inactive {
+    background-color: #f3f2f2;
+    border: 2px solid #c9c7c5;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: default;
+    opacity: 0.7;
+}
+
+.step-card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.step-badge-circle {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #c9c7c5;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-badge-blue {
+    background-color: #0176d3;
+}
+
+.step-card-body {
+    flex: 1;
+}
+
+.step-card-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #080707;
+    margin: 0 0 0.25rem 0;
+}
+
+.step-card-description {
+    font-size: 0.8125rem;
+    color: #706e6b;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.step-status-badge {
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+/* Side Navigation Styling */
+.side-nav-container {
+    background-color: #ffffff;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #dddbda;
+    width: 280px;
+    flex: 0 0 280px;
+}
+
+.side-nav-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.side-nav-footer {
+    border-top: 1px solid #dddbda;
+    padding: 0.5rem;
+    background-color: #ffffff;
+}
+
+.slds-nav-vertical__title {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #3e3e3c;
+}
+
+.slds-nav-vertical__item.slds-is-active {
+    background-color: #d8edff;
+    border-left: 3px solid #0176d3;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.slds-nav-vertical__item.slds-is-active .slds-nav-vertical__action {
+    font-weight: 600;
+    color: #014486;
+    padding-left: calc(1rem - 3px); /* Account for the border */
+}
+
+.slds-nav-vertical__item {
+    margin: 0;
+}
+
+.slds-nav-vertical__action {
+    padding: 0.5rem 1rem;
+}
+
 /* Chat FAB Styling */
 .chat-fab {
     position: fixed;
@@ -34,4 +198,64 @@
     border-color: #0176D3;
     box-shadow: 0 4px 12px rgba(1, 118, 211, 0.2);
     transform: translateY(-2px);
+}
+
+/* Visual picker cards - for unification type selection */
+.visual-picker-card {
+    background-color: #ffffff;
+    border: 2px solid #c9c7c5;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    min-height: 120px;
+}
+
+.visual-picker-card:hover {
+    border-color: #0176D3;
+    box-shadow: 0 2px 8px rgba(1, 118, 211, 0.2);
+}
+
+.visual-picker-selected {
+    border-color: #0176D3;
+    border-width: 2px;
+    background-color: #f3f9ff;
+}
+
+.visual-picker-checkmark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent #0176D3 transparent transparent;
+    border-top-right-radius: 0.5rem;
+}
+
+.visual-picker-checkmark lightning-icon {
+    position: absolute;
+    top: 4px;
+    right: -36px;
+}
+
+/* Footer Layout */
+.footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.footer-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
 }

@@ -79,3 +79,8 @@
 lightning-badge {
     display: inline-block;
 }
+
+/* Hide only the navigation tabs for IR 266 page, keep the global header */
+:host:has(page-ir266) ui-global-navigation {
+    display: none;
+}
