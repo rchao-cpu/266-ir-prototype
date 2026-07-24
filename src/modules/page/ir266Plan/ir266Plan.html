@@ -197,158 +197,6 @@
                         </div>
                     </div>
 
-                    <!-- Data Quality Card -->
-                    <div class={dataQualityCardClass}>
-                        <div class="dq-card__inner">
-                            <!-- Data Quality Section Header -->
-                            <div class="dq-section-header" onclick={handleToggleDataQuality}>
-                                <div class="dq-section-header__left">
-                                    <lightning-icon
-                                        icon-name={dataQualityIcon}
-                                        size="x-small"
-                                        variant={dataQualityIconVariant}
-                                        class="slds-m-right_x-small dq-section-header__icon">
-                                    </lightning-icon>
-                                    <div>
-                                        <h3 class={dataQualityTitleClass}>{dataQualityTitle}</h3>
-                                        <p class="dq-section-subtitle slds-text-color_weak">{dataQualitySubtitle}</p>
-                                    </div>
-                                </div>
-                                <lightning-icon
-                                    icon-name={dataQualityChevronIcon}
-                                    size="x-small"
-                                    class="dq-section-header__chevron">
-                                </lightning-icon>
-                            </div>
-
-                            <!-- Expanded View - Details -->
-                            <template lwc:if={dataQualityExpanded}>
-                                <div class="slds-m-top_medium">
-                                    <template lwc:if={isScenario2}>
-                                        <div class="slds-scoped-notification slds-media slds-media_center slds-theme_warning slds-m-bottom_medium" role="status">
-                                            <div class="slds-media__figure">
-                                                <lightning-icon icon-name="utility:warning" size="small" alternative-text="Warning"></lightning-icon>
-                                            </div>
-                                            <div class="slds-media__body">
-                                                <p><strong>3 issues require attention</strong> before running Identity Resolution.</p>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <h4 class="slds-text-heading_small slds-m-bottom_medium">{dataQualityExpandedTitle}</h4>
-                                    <lightning-layout multiple-rows>
-                                        <template for:each={dataQualityMetrics} for:item="metric">
-                                            <lightning-layout-item key={metric.id} size="12" class="slds-m-bottom_medium">
-                                                <div class="slds-box slds-box_x-small">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <div>
-                                                            <h5 class="slds-text-body_regular slds-m-bottom_xx-small"><strong>{metric.title}</strong></h5>
-                                                            <p class="slds-text-body_small slds-text-color_weak">{metric.description}</p>
-                                                        </div>
-                                                        <div class="slds-grid slds-grid_vertical-align-center">
-                                                            <template lwc:if={metric.icon}>
-                                                                <lightning-icon icon-name={metric.icon} size="x-small" variant={metric.iconVariant} class="slds-m-right_x-small"></lightning-icon>
-                                                            </template>
-                                                            <div class={metric.valueClass}>{metric.value}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </lightning-layout-item>
-                                        </template>
-                                    </lightning-layout>
-
-                                    <!-- Agentforce Recommendations (V2 only) -->
-                                    <template lwc:if={isScenario2}>
-                                        <div class="dq-recommendations slds-m-top_large">
-                                            <div class="dq-recommendations__header">
-                                                <lightning-icon icon-name="utility:einstein" size="x-small" class="slds-m-right_x-small dq-recommendations__icon"></lightning-icon>
-                                                <span class="slds-text-heading_small">Agentforce Recommendations</span>
-                                            </div>
-                                            <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small slds-m-bottom_medium">Choose how you want to resolve these data quality issues before running Identity Resolution.</p>
-
-                                            <lightning-layout multiple-rows class="slds-gutters_small">
-                                                <!-- Option 1: Auto-fix -->
-                                                <lightning-layout-item size="6" padding="around-small">
-                                                    <div class={autoFixCardClass} data-fix="auto" onclick={handleFixSelect}>
-                                                        <template lwc:if={isAutoFixSelected}>
-                                                            <div class="visual-picker-checkmark">
-                                                                <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
-                                                            </div>
-                                                        </template>
-                                                        <div class="slds-p-around_medium">
-                                                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
-                                                                <lightning-icon icon-name="utility:magicwand" size="small" class="slds-m-right_small dq-fix-icon"></lightning-icon>
-                                                                <h3 class="slds-text-heading_small">Auto-Fix with AI</h3>
-                                                            </div>
-                                                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Let Agentforce automatically standardize phone formats, infer missing emails from CRM, and apply default DMO mappings — no manual steps required.</p>
-                                                            <ul class="dq-fix-checklist">
-                                                                <li>
-                                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
-                                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
-                                                                </li>
-                                                                <li>
-                                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
-                                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
-                                                                </li>
-                                                                <li>
-                                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
-                                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </lightning-layout-item>
-
-                                                <!-- Option 2: Guided fix -->
-                                                <lightning-layout-item size="6" padding="around-small">
-                                                    <div class={guidedFixCardClass} data-fix="guided" onclick={handleFixSelect}>
-                                                        <template lwc:if={isGuidedFixSelected}>
-                                                            <div class="visual-picker-checkmark">
-                                                                <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
-                                                            </div>
-                                                        </template>
-                                                        <div class="slds-p-around_medium">
-                                                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
-                                                                <lightning-icon icon-name="utility:user" size="small" class="slds-m-right_small dq-fix-icon"></lightning-icon>
-                                                                <h3 class="slds-text-heading_small">Guided Manual Review</h3>
-                                                            </div>
-                                                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Walk through each issue step-by-step with Agentforce explaining the problem and your options. You approve every change before it's applied.</p>
-                                                            <ul class="dq-fix-checklist">
-                                                                <li>
-                                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
-                                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
-                                                                </li>
-                                                                <li>
-                                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
-                                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
-                                                                </li>
-                                                                <li>
-                                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
-                                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </lightning-layout-item>
-                                            </lightning-layout>
-
-                                            <template lwc:if={selectedFix}>
-                                                <div class="slds-m-top_medium slds-text-align_center">
-                                                    <lightning-button
-                                                        label={fixButtonLabel}
-                                                        variant="brand"
-                                                        icon-name="utility:einstein"
-                                                        icon-position="left"
-                                                        onclick={handleApplyFix}>
-                                                    </lightning-button>
-                                                </div>
-                                            </template>
-                                        </div>
-                                    </template>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-
                     <!-- Route Selection (hidden once a ruleset has been created) -->
                     <template lwc:if={showCreateRuleset}>
                     <div class="slds-m-top_medium slds-m-bottom_small"></div>
@@ -356,57 +204,67 @@
                         <div class="slds-p-around_medium">
                             <h2 class="slds-text-heading_medium slds-text-align_center slds-m-bottom_small">Create your first Ruleset to merge your customer profiles</h2>
                             <p class="slds-text-body_small slds-text-align_center slds-m-bottom_large">Select how you want to create your ruleset</p>
-                            <lightning-layout multiple-rows>
-                                <lightning-layout-item size="4" padding="around-small">
-                                    <div class={getRouteCardClass} data-route="unify" onclick={handleRouteSelect}>
-                                        <template lwc:if={isUnifySelected}>
-                                            <div class="visual-picker-checkmark">
-                                                <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
-                                            </div>
-                                        </template>
-                                        <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">
-                                                Unify Unmatched Records
-                                                <lightning-badge label="Recommended" class="slds-m-left_x-small"></lightning-badge>
-                                            </h3>
-                                            <p class="slds-text-body_small slds-text-color_weak">Create new match rules to consolidate duplicate records</p>
-                                        </div>
-                                    </div>
-                                </lightning-layout-item>
-                                <lightning-layout-item size="4" padding="around-small">
-                                    <div class={getMdmCardClass} data-route="mdm" onclick={handleRouteSelect}>
-                                        <template lwc:if={isMdmSelected}>
-                                            <div class="visual-picker-checkmark">
-                                                <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
-                                            </div>
-                                        </template>
-                                        <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Import MDM</h3>
-                                            <p class="slds-text-body_small slds-text-color_weak">Import pre-existing rulesets from Master Data Management systems</p>
-                                        </div>
-                                    </div>
-                                </lightning-layout-item>
-                                <lightning-layout-item size="4" padding="around-small">
-                                    <div class={getDatakitCardClass} data-route="datakit" onclick={handleRouteSelect}>
-                                        <template lwc:if={isDatakitSelected}>
-                                            <div class="visual-picker-checkmark">
-                                                <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
-                                            </div>
-                                        </template>
-                                        <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Import from Data Kits</h3>
-                                            <p class="slds-text-body_small slds-text-color_weak">Use pre-configured ruleset templates from Salesforce Data Kits</p>
-                                        </div>
-                                    </div>
-                                </lightning-layout-item>
-                            </lightning-layout>
 
-                            <div class="slds-text-align_center slds-m-top_large">
-                                <lightning-button
-                                    label="Begin"
-                                    variant="brand"
-                                    onclick={handleStartConfiguration}>
-                                </lightning-button>
+                            <!-- Empty state illustration -->
+                            <div class="plan-empty-state">
+                                <div class="slds-illustration slds-illustration_small">
+                                    <img src="/images/empty-state-tasks.svg" class="slds-illustration__svg" alt="" />
+                                    <div class="slds-text-longform">
+                                        <p class="slds-text-body_regular slds-text-color_weak">No rulesets yet. Use Begin to create your first ruleset.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Begin button with dropdown -->
+                                <div class="slds-button-group plan-begin-trigger" onclick={handleBeginDropdownToggle}>
+                                    <lightning-button
+                                        label="Begin"
+                                        variant="brand"
+                                        onclick={handleBeginClick}>
+                                    </lightning-button>
+                                    <button class="slds-button slds-button_brand slds-button_last plan-begin-chevron" type="button" aria-haspopup="listbox" aria-expanded={isBeginDropdownOpen}>
+                                        <lightning-icon icon-name="utility:down" size="x-small" variant="inverse"></lightning-icon>
+                                    </button>
+
+                                    <!-- Dropdown listbox -->
+                                    <template lwc:if={isBeginDropdownOpen}>
+                                        <div class="slds-dropdown plan-begin-dropdown" role="listbox">
+                                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                            <li role="presentation" class="slds-listbox__item">
+                                                <span class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option" data-route="unify" onclick={handleRouteDropdownSelect}>
+                                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                                        <lightning-icon icon-name="utility:merge" size="x-small"></lightning-icon>
+                                                    </span>
+                                                    <span class="slds-media__body">
+                                                        <span class="slds-truncate">Unify Unmatched Records
+                                                            <lightning-badge label="Recommended" class="slds-m-left_x-small"></lightning-badge>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </li>
+                                            <li role="presentation" class="slds-listbox__item">
+                                                <span class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option" data-route="mdm" onclick={handleRouteDropdownSelect}>
+                                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                                        <lightning-icon icon-name="utility:upload" size="x-small"></lightning-icon>
+                                                    </span>
+                                                    <span class="slds-media__body">
+                                                        <span class="slds-truncate">Import MDM</span>
+                                                    </span>
+                                                </span>
+                                            </li>
+                                            <li role="presentation" class="slds-listbox__item">
+                                                <span class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option" data-route="datakit" onclick={handleRouteDropdownSelect}>
+                                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                                        <lightning-icon icon-name="utility:package" size="x-small"></lightning-icon>
+                                                    </span>
+                                                    <span class="slds-media__body">
+                                                        <span class="slds-truncate">Import from Data Kits</span>
+                                                    </span>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    </template>
+                                </div>
                             </div>
                         </div>
                     </lightning-card>
@@ -594,7 +452,7 @@
                                 </div>
                             </div>
                         </div>
-                        <template lwc:if={showRecommendationBanners}>
+                        <template lwc:if={isStep4}>
                         <div class="slds-page-header__col-actions slds-col_bump-left">
                             <lightning-button
                                 label="Preview Results"
@@ -717,10 +575,7 @@
                                 <p class="slds-text-body_regular slds-text-color_weak slds-m-bottom_medium">
                                     Each job run consumes Data Cloud credits, regardless of run mode. Choose how your ruleset jobs are triggered to manage your credit usage and optimize performance.
                                 </p>
-
-                                <!-- Mode picker cards -->
-                                <div class="slds-grid slds-gutters slds-m-bottom_medium">
-                                    <!-- Automatic card -->
+                                <div class="slds-grid slds-gutters">
                                     <div class="slds-col slds-size_1-of-2">
                                         <div class={automaticCardClass} onclick={handleSelectAutomatic} style="cursor:pointer;position:relative;">
                                             <template lwc:if={isAutomaticMode}>
@@ -741,8 +596,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Manual card -->
                                     <div class="slds-col slds-size_1-of-2">
                                         <div class={manualCardClass} onclick={handleSelectManual} style="cursor:pointer;position:relative;">
                                             <template lwc:if={isManualMode}>
@@ -764,46 +617,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Automatic options -->
-                                <template lwc:if={isAutomaticMode}>
-                                    <div class="step1-section slds-m-top_medium">
-                                        <h3 class="step1-section__title slds-m-bottom_small">Automatic Run Settings</h3>
-
-                                        <lightning-combobox
-                                            label="Run Frequency"
-                                            placeholder="Select frequency..."
-                                            options={jobScheduleFrequencyOptions}
-                                            value={jobFrequency}
-                                            onchange={handleJobFrequencyChange}
-                                            class="slds-m-bottom_medium">
-                                        </lightning-combobox>
-
-                                        <!-- Pause toggle -->
-                                        <div class="slds-box slds-box_x-small slds-m-bottom_medium" style="background:#fff8ed;border-color:#f5ca6b;">
-                                            <div class="slds-media slds-media_center">
-                                                <div class="slds-media__figure slds-m-right_small">
-                                                    <lightning-icon icon-name="utility:info" size="x-small" style="--slds-c-icon-color-foreground-default:#a86403;"></lightning-icon>
-                                                </div>
-                                                <div class="slds-media__body">
-                                                    <p class="slds-text-body_small slds-text-color_default slds-m-bottom_x-small">
-                                                        <strong>Pause automatic runs during configuration</strong>
-                                                    </p>
-                                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
-                                                        Pausing lets you finish all configuration steps — match rules, reconciliation rules, and filters — before any jobs run and consume credits. Once you're ready, return to this screen and unpause to resume the automatic schedule.
-                                                    </p>
-                                                    <lightning-input
-                                                        type="checkbox"
-                                                        label="Pause automatic runs while I finish configuration"
-                                                        checked={pauseAutomaticRuns}
-                                                        onchange={handlePauseAutoToggle}>
-                                                    </lightning-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-
                             </div>
                         </div>
                     </template>
@@ -1427,506 +1240,473 @@
                         </div>
                     </div>
 
-                    <!-- Tabs -->
-                    <lightning-tabset active-tab-value={activeResolutionTab} onselect={handleResolutionTabChange} class="slds-m-bottom_medium">
-                        <lightning-tab label="Resolution Summary" value="summary">
+                    <!-- Two-Column Layout -->
+                    <div class="oc-two-col-layout">
+                        <!-- Left: main content with tabs -->
+                        <div class="oc-main-col">
+                            <lightning-tabset active-tab-value={activeResolutionTab} onselect={handleResolutionTabChange} class="slds-m-bottom_medium">
+                                <lightning-tab label="Ruleset Properties" value="summary">
 
-                        <!-- Section 1: KPI Stats -->
-                        <div class="oc-section slds-m-top_medium slds-m-bottom_medium">
-                        <div class="slds-scoped-notification slds-media slds-media_center slds-scoped-notification_light slds-m-bottom_medium" role="status">
-                            <div class="slds-media__figure">
-                                <lightning-icon icon-name="utility:info" size="small" alternative-text="Info"></lightning-icon>
-                            </div>
-                            <div class="slds-media__body">
-                                <p>Last run: 06/25/2026 2:45 PM | Duration: 12 min 34 sec</p>
-                            </div>
-                        </div>
-
-                        <lightning-layout multiple-rows>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Unified / Source</span>
-                                        <lightning-helptext content="435K unified profiles generated from 580K source records." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">435K / 580K</div>
-                                    <div class="kpi-change-positive">+30K</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Consolidation Rate</span>
-                                        <lightning-helptext content="75% of source records were successfully matched." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">75%</div>
-                                    <div class="kpi-change-positive">+1.6%</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Known / Anonymous</span>
-                                        <lightning-helptext content="370K known vs 210K anonymous profiles." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">370K / 210K</div>
-                                    <div class="kpi-change-positive">+30K</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Match Quality Score</span>
-                                        <lightning-helptext content="Aggregate confidence score across all match rules." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">92.5</div>
-                                    <div class="kpi-change-positive">+2.57%</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Cross-Source Matches</span>
-                                        <lightning-helptext content="Profiles matched across multiple data sources." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">285K</div>
-                                    <div class="kpi-change-positive">+12K</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">New Matches</span>
-                                        <lightning-helptext content="New matches found in this job run." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">15K</div>
-                                    <div class="kpi-change-negative">-1K</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Unmatched Records</span>
-                                        <lightning-helptext content="Source records that could not be matched." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">0</div>
-                                    <div class="kpi-change-neutral">±0</div>
-                                </div>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="3" padding="around-small">
-                                <div class="slds-box kpi-box">
-                                    <div class="kpi-title-with-info">
-                                        <span class="slds-text-body_small slds-text-color_weak">Data Completeness</span>
-                                        <lightning-helptext content="Percentage of key identity fields populated." icon-name="utility:info"></lightning-helptext>
-                                    </div>
-                                    <div class="kpi-value-large">94%</div>
-                                    <div class="kpi-change-positive">+3.2%</div>
-                                </div>
-                            </lightning-layout-item>
-                        </lightning-layout>
-                        </div>
-
-                        <!-- Section 2: Trend Charts -->
-                        <div class="oc-section slds-m-bottom_medium">
-                        <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
-                            <h2 class="slds-text-heading_small">Trends</h2>
-                            <div class="slds-col_bump-left" style="width: 160px;">
-                                <lightning-combobox
-                                    label="Duration"
-                                    variant="label-hidden"
-                                    value={trendDuration}
-                                    options={trendDurationOptions}
-                                    onchange={handleTrendDurationChange}>
-                                </lightning-combobox>
-                            </div>
-                        </div>
-                        <lightning-layout multiple-rows>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-card title="Consolidation Rate Trend">
+                                <!-- Match Rules -->
+                                <div class="oc-section slds-m-top_medium slds-m-bottom_medium">
+                                <lightning-card title="Match Rules">
+                                    <lightning-button slot="actions" label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left"></lightning-button>
                                     <div class="slds-p-around_medium">
-                                        <div class="chart-placeholder-small">
-                                            <p class="slds-text-body_small slds-text-align_center slds-text-color_weak">Line chart: 70% → 75% · {trendDurationLabel}</p>
-                                        </div>
+                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th scope="col"><div class="slds-truncate">Rule Name</div></th>
+                                                    <th scope="col"><div class="slds-truncate">Matches</div></th>
+                                                    <th scope="col"><div class="slds-truncate">Match Rate</div></th>
+                                                    <th scope="col"><div class="slds-truncate">Avg Confidence</div></th>
+                                                    <th scope="col"><div class="slds-truncate">Cross-Source</div></th>
+                                                    <th scope="col"><div class="slds-truncate">Trend</div></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><div class="slds-truncate"><strong>Exact Name + Email + Phone</strong></div></td>
+                                                    <td><div class="slds-truncate">185K</div></td>
+                                                    <td><div class="slds-truncate">42.5%</div></td>
+                                                    <td><div class="slds-truncate">98.2%</div></td>
+                                                    <td><div class="slds-truncate">125K</div></td>
+                                                    <td><div class="slds-truncate slds-text-color_success">↑ 2.3%</div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><div class="slds-truncate"><strong>Fuzzy Name + Email</strong></div></td>
+                                                    <td><div class="slds-truncate">120K</div></td>
+                                                    <td><div class="slds-truncate">27.6%</div></td>
+                                                    <td><div class="slds-truncate">89.5%</div></td>
+                                                    <td><div class="slds-truncate">95K</div></td>
+                                                    <td><div class="slds-truncate slds-text-color_success">↑ 1.8%</div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><div class="slds-truncate"><strong>Email + Phone Match</strong></div></td>
+                                                    <td><div class="slds-truncate">95K</div></td>
+                                                    <td><div class="slds-truncate">21.8%</div></td>
+                                                    <td><div class="slds-truncate">95.7%</div></td>
+                                                    <td><div class="slds-truncate">65K</div></td>
+                                                    <td><div class="slds-truncate slds-text-color_error">↓ 0.5%</div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><div class="slds-truncate"><strong>Exact Name + Address</strong></div></td>
+                                                    <td><div class="slds-truncate">35K</div></td>
+                                                    <td><div class="slds-truncate">8.1%</div></td>
+                                                    <td><div class="slds-truncate">92.1%</div></td>
+                                                    <td><div class="slds-truncate">18K</div></td>
+                                                    <td><div class="slds-truncate">→ 0%</div></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </lightning-card>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-card title="Anonymous to Known Conversion">
-                                    <div class="slds-p-around_medium">
-                                        <div class="chart-placeholder-small">
-                                            <p class="slds-text-body_small slds-text-align_center slds-text-color_weak">Line chart: Peak 13.5% conversion · {trendDurationLabel}</p>
-                                        </div>
-                                    </div>
-                                </lightning-card>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-card title="Unified Profiles by Source (Top 5)">
-                                    <div class="slds-p-around_medium">
-                                        <div class="chart-placeholder-small">
-                                            <p class="slds-text-body_small slds-text-align_center slds-text-color_weak">Pie chart: Sales Cloud 40%, Marketing 20%, Commerce 20% · {trendDurationLabel}</p>
-                                        </div>
-                                    </div>
-                                </lightning-card>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-card title="New &amp; Unmatched Profiles">
-                                    <div class="slds-p-around_medium">
-                                        <div class="chart-placeholder-small">
-                                            <p class="slds-text-body_small slds-text-align_center slds-text-color_weak">Bar chart: New profiles spike on Day 3 · {trendDurationLabel}</p>
-                                        </div>
-                                    </div>
-                                </lightning-card>
-                            </lightning-layout-item>
-                        </lightning-layout>
-                        </div>
+                                </div>
 
-                        </lightning-tab>
+                                <!-- Reconciliation Rules -->
+                                <div class="oc-section slds-m-bottom_medium">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
+                                        <div>
+                                            <h2 class="slds-text-heading_small">Reconciliation Rules</h2>
+                                        </div>
+                                        <div class="slds-col_bump-left">
+                                            <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left"></lightning-button>
+                                        </div>
+                                    </div>
 
-                        <!-- Configurations Tab -->
-                        <lightning-tab label="Configurations" value="configurations">
-
-                        <!-- Match Rules -->
-                        <div class="oc-section slds-m-top_medium slds-m-bottom_medium">
-                        <lightning-card title="Match Rules">
-                            <lightning-button slot="actions" label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left"></lightning-button>
-                            <div class="slds-p-around_medium">
-                                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
-                                    <thead>
-                                        <tr class="slds-line-height_reset">
-                                            <th scope="col"><div class="slds-truncate">Rule Name</div></th>
-                                            <th scope="col"><div class="slds-truncate">Matches</div></th>
-                                            <th scope="col"><div class="slds-truncate">Match Rate</div></th>
-                                            <th scope="col"><div class="slds-truncate">Avg Confidence</div></th>
-                                            <th scope="col"><div class="slds-truncate">Cross-Source</div></th>
-                                            <th scope="col"><div class="slds-truncate">Trend</div></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><div class="slds-truncate"><strong>Exact Name + Email + Phone</strong></div></td>
-                                            <td><div class="slds-truncate">185K</div></td>
-                                            <td><div class="slds-truncate">42.5%</div></td>
-                                            <td><div class="slds-truncate">98.2%</div></td>
-                                            <td><div class="slds-truncate">125K</div></td>
-                                            <td><div class="slds-truncate slds-text-color_success">↑ 2.3%</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td><div class="slds-truncate"><strong>Fuzzy Name + Email</strong></div></td>
-                                            <td><div class="slds-truncate">120K</div></td>
-                                            <td><div class="slds-truncate">27.6%</div></td>
-                                            <td><div class="slds-truncate">89.5%</div></td>
-                                            <td><div class="slds-truncate">95K</div></td>
-                                            <td><div class="slds-truncate slds-text-color_success">↑ 1.8%</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td><div class="slds-truncate"><strong>Email + Phone Match</strong></div></td>
-                                            <td><div class="slds-truncate">95K</div></td>
-                                            <td><div class="slds-truncate">21.8%</div></td>
-                                            <td><div class="slds-truncate">95.7%</div></td>
-                                            <td><div class="slds-truncate">65K</div></td>
-                                            <td><div class="slds-truncate slds-text-color_error">↓ 0.5%</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td><div class="slds-truncate"><strong>Exact Name + Address</strong></div></td>
-                                            <td><div class="slds-truncate">35K</div></td>
-                                            <td><div class="slds-truncate">8.1%</div></td>
-                                            <td><div class="slds-truncate">92.1%</div></td>
-                                            <td><div class="slds-truncate">18K</div></td>
-                                            <td><div class="slds-truncate">→ 0%</div></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </lightning-card>
-                        </div>
-
-                        <!-- Reconciliation Rules -->
-                        <div class="oc-section slds-m-bottom_medium">
-                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
-                                <div>
-                                    <h2 class="slds-text-heading_small">Reconciliation Rules</h2>
-                                </div>
-                                <div class="slds-col_bump-left">
-                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left"></lightning-button>
-                                </div>
-                            </div>
-
-                            <!-- Source Priority order (shown once, applies to all Source Priority fields) -->
-                            <div class="recon-rules-list">
-                            <!-- DMO: Individual -->
-                            <div class="recon-dmo-row" data-dmo="individual" onclick={handleReconDmoToggle}>
-                                <div class="recon-dmo-row__header">
-                                    <div class="recon-dmo-row__left">
-                                        <lightning-icon icon-name={individualChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                        <span class="recon-dmo-row__name">Individual</span>
-                                        <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">5 fields</span>
-                                        <div class="recon-dmo-row__meta">
-                                            <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                            <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent slds-m-left_x-small"></lightning-badge>
-                                        </div>
-                                    </div>
-                                </div>
-                                <template lwc:if={isIndividualExpanded}>
-                                    <div class="recon-dmo-row__fields">
-                                        <div class="recon-field-row recon-field-row--override">
-                                            <span class="recon-field-row__name">First Name</span>
-                                            <span class="recon-field-row__override-label">Override:</span>
-                                            <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge>
-                                        </div>
-                                        <div class="recon-field-row recon-field-row--override">
-                                            <span class="recon-field-row__name">Last Name</span>
-                                            <span class="recon-field-row__override-label">Override:</span>
-                                            <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge>
-                                        </div>
-                                        <div class="recon-field-row recon-field-row--override">
-                                            <span class="recon-field-row__name">Birth Date</span>
-                                            <span class="recon-field-row__override-label">Override:</span>
-                                            <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Email Address</span>
-                                            <span class="recon-field-row__default-label">Default (Most Frequent)</span>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Phone Number</span>
-                                            <span class="recon-field-row__default-label">Default (Most Frequent)</span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                            <!-- DMO: Contact Point Email -->
-                            <div class="recon-dmo-row" data-dmo="cpEmail" onclick={handleReconDmoToggle}>
-                                <div class="recon-dmo-row__header">
-                                    <div class="recon-dmo-row__left">
-                                        <lightning-icon icon-name={cpEmailChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                        <span class="recon-dmo-row__name">Contact Point Email</span>
-                                        <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
-                                        <div class="recon-dmo-row__meta">
-                                            <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                            <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
-                                        </div>
-                                    </div>
-                                </div>
-                                <template lwc:if={isCpEmailExpanded}>
-                                    <div class="recon-dmo-row__fields">
-                                        <div class="recon-field-row recon-field-row--override">
-                                            <span class="recon-field-row__name">Is Primary</span>
-                                            <span class="recon-field-row__override-label">Override:</span>
-                                            <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Email Address</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Email Domain</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                            <!-- DMO: Contact Point Phone -->
-                            <div class="recon-dmo-row" data-dmo="cpPhone" onclick={handleReconDmoToggle}>
-                                <div class="recon-dmo-row__header">
-                                    <div class="recon-dmo-row__left">
-                                        <lightning-icon icon-name={cpPhoneChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                        <span class="recon-dmo-row__name">Contact Point Phone</span>
-                                        <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
-                                        <div class="recon-dmo-row__meta">
-                                            <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                            <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
-                                        </div>
-                                    </div>
-                                </div>
-                                <template lwc:if={isCpPhoneExpanded}>
-                                    <div class="recon-dmo-row__fields">
-                                        <div class="recon-field-row recon-field-row--override">
-                                            <span class="recon-field-row__name">Phone Type</span>
-                                            <span class="recon-field-row__override-label">Override:</span>
-                                            <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Phone Number</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Country Code</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                            <!-- DMO: Contact Point Address -->
-                            <div class="recon-dmo-row" data-dmo="cpAddress" onclick={handleReconDmoToggle}>
-                                <div class="recon-dmo-row__header">
-                                    <div class="recon-dmo-row__left">
-                                        <lightning-icon icon-name={cpAddressChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                        <span class="recon-dmo-row__name">Contact Point Address</span>
-                                        <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">4 fields</span>
-                                        <div class="recon-dmo-row__meta">
-                                            <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                            <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
-                                        </div>
-                                    </div>
-                                </div>
-                                <template lwc:if={isCpAddressExpanded}>
-                                    <div class="recon-dmo-row__fields">
-                                        <div class="recon-field-row recon-field-row--override">
-                                            <span class="recon-field-row__name">Street</span>
-                                            <span class="recon-field-row__override-label">Override:</span>
-                                            <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">City</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">State</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                        <div class="recon-field-row">
-                                            <span class="recon-field-row__name">Postal Code</span>
-                                            <span class="recon-field-row__default-label">Default (Most Recent)</span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                            </div><!-- end recon-rules-list -->
-                        </div>
-
-                        <!-- Trusted Data Sources -->
-                        <div class="oc-section slds-m-bottom_medium">
-                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
-                                <h2 class="slds-text-heading_small">Trusted Data Sources</h2>
-                                <div class="slds-col_bump-left">
-                                    <lightning-button label="Edit" variant="neutral"></lightning-button>
-                                </div>
-                            </div>
-                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout">
-                                <thead>
-                                    <tr class="slds-line-height_reset">
-                                        <th scope="col" style="width: 35%"><div class="slds-truncate">DMO</div></th>
-                                        <th scope="col" style="width: 65%"><div class="slds-truncate">Trusted Data Source</div></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><div class="slds-truncate">Individual</div></td>
-                                        <td><div class="slds-truncate">{individualDloLabel}</div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><div class="slds-truncate">Contact Point Address</div></td>
-                                        <td><div class="slds-truncate">{contactPointAddressLabel}</div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><div class="slds-truncate">Contact Point App</div></td>
-                                        <td><div class="slds-truncate">{contactPointAppLabel}</div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><div class="slds-truncate">Contact Point Email</div></td>
-                                        <td><div class="slds-truncate">{contactPointEmailLabel}</div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><div class="slds-truncate">Contact Point Social</div></td>
-                                        <td><div class="slds-truncate">{contactPointSocialLabel}</div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><div class="slds-truncate">Contact Point Phone</div></td>
-                                        <td><div class="slds-truncate">{contactPointPhoneLabel}</div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><div class="slds-truncate">Party ID</div></td>
-                                        <td><div class="slds-truncate">{partyIdLabel}</div></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        </lightning-tab>
-                        <lightning-tab label="Processing History" value="history">
-                        <div class="oc-section">
-                            <!-- Header row -->
-                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
-                                <div>
-                                    <h2 class="slds-text-heading_medium slds-m-bottom_xx-small">Ruleset History</h2>
-                                    <p class="slds-text-body_small slds-text-color_weak">This log includes all changes to your ruleset and ruleset runs. Incremental runs are grouped if multiple runs happen within the same period.</p>
-                                </div>
-                                <div class="slds-col_bump-left slds-grid slds-grid_vertical-align-center">
-                                    <lightning-button label="Download" variant="neutral" icon-name="utility:download" icon-position="left" class="slds-m-right_small"></lightning-button>
-                                    <lightning-input type="search" label="Search" variant="label-hidden" placeholder="Search..." class="slds-m-right_x-small"></lightning-input>
-                                    <lightning-button-icon icon-name="utility:filterList" variant="border-filled" alternative-text="Filter"></lightning-button-icon>
-                                </div>
-                            </div>
-
-                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout ruleset-history-table">
-                                <thead>
-                                    <tr class="slds-line-height_reset">
-                                        <th scope="col" style="width: 3rem;"></th>
-                                        <th scope="col">
-                                            <div class="slds-truncate">Date &amp; Time Duration
-                                                <lightning-helptext content="Date and time of the job run, and its duration." icon-name="utility:info"></lightning-helptext>
+                                    <div class="recon-rules-list">
+                                    <!-- DMO: Individual -->
+                                    <div class="recon-dmo-row" data-dmo="individual" onclick={handleReconDmoToggle}>
+                                        <div class="recon-dmo-row__header">
+                                            <div class="recon-dmo-row__left">
+                                                <lightning-icon icon-name={individualChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                                <span class="recon-dmo-row__name">Individual</span>
+                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">5 fields</span>
+                                                <div class="recon-dmo-row__meta">
+                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                    <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent slds-m-left_x-small"></lightning-badge>
+                                                </div>
                                             </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div class="slds-truncate">Run Reason
-                                                <lightning-helptext content="What triggered this run." icon-name="utility:info"></lightning-helptext>
+                                        </div>
+                                        <template lwc:if={isIndividualExpanded}>
+                                            <div class="recon-dmo-row__fields">
+                                                <div class="recon-dmo-row__fields-actions">
+                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                                </div>
+                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">First Name</div></td>
+                                                            <td><div class="slds-truncate">FirstName</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Last Name</div></td>
+                                                            <td><div class="slds-truncate">LastName</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Birth Date</div></td>
+                                                            <td><div class="slds-truncate">BirthDate</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Email Address</div></td>
+                                                            <td><div class="slds-truncate">EmailAddress</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Phone Number</div></td>
+                                                            <td><div class="slds-truncate">PhoneNumber</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                        </th>
-                                        <th scope="col"><div class="slds-truncate">Total Source Profiles</div></th>
-                                        <th scope="col"><div class="slds-truncate">Total Unified Profiles</div></th>
-                                        <th scope="col"><div class="slds-truncate">Total Known Records</div></th>
-                                        <th scope="col"><div class="slds-truncate">Filtered Records</div></th>
-                                        <th scope="col"><div class="slds-truncate">Processed Records</div></th>
-                                        <th scope="col"><div class="slds-truncate">Consolidatio...</div></th>
-                                        <th scope="col"><div class="slds-truncate">Status</div></th>
-                                        <th scope="col"><div class="slds-truncate">Job ID</div></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template for:each={rulesetHistoryList} for:item="row">
-                                        <tr key={row.id} class="slds-hint-parent">
-                                            <td>
-                                                <lightning-button-icon icon-name="utility:chevronright" variant="bare" size="small" alternative-text="Expand"></lightning-button-icon>
-                                            </td>
-                                            <td>
-                                                <div class="slds-truncate">{row.dateTime}</div>
-                                                <div class="slds-text-body_small slds-text-color_weak">{row.duration}</div>
-                                            </td>
-                                            <td><div class="slds-truncate">{row.runReason}</div></td>
-                                            <td><div class="slds-truncate">{row.totalSourceProfiles}</div></td>
-                                            <td><div class="slds-truncate">{row.totalUnifiedProfiles}</div></td>
-                                            <td><div class="slds-truncate">{row.totalKnownRecords}</div></td>
-                                            <td><div class="slds-truncate">{row.filteredRecords}</div></td>
-                                            <td><div class="slds-truncate">{row.processedRecords}</div></td>
-                                            <td><div class="slds-truncate">{row.consolidationRate}</div></td>
-                                            <td>
-                                                <template lwc:if={row.isSucceeded}>
-                                                    <div class="slds-grid slds-grid_vertical-align-center">
-                                                        <lightning-icon icon-name="utility:success" size="x-small" variant="success" class="slds-m-right_xx-small"></lightning-icon>
-                                                        <span class="slds-text-color_success">Succeeded</span>
+                                        </template>
+                                    </div>
+                                    <!-- DMO: Contact Point Email -->
+                                    <div class="recon-dmo-row" data-dmo="cpEmail" onclick={handleReconDmoToggle}>
+                                        <div class="recon-dmo-row__header">
+                                            <div class="recon-dmo-row__left">
+                                                <lightning-icon icon-name={cpEmailChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                                <span class="recon-dmo-row__name">Contact Point Email</span>
+                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
+                                                <div class="recon-dmo-row__meta">
+                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                    <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <template lwc:if={isCpEmailExpanded}>
+                                            <div class="recon-dmo-row__fields">
+                                                <div class="recon-dmo-row__fields-actions">
+                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                                </div>
+                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Is Primary</div></td>
+                                                            <td><div class="slds-truncate">IsPrimary</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Email Address</div></td>
+                                                            <td><div class="slds-truncate">EmailAddress</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Email Domain</div></td>
+                                                            <td><div class="slds-truncate">EmailDomain</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <!-- DMO: Contact Point Phone -->
+                                    <div class="recon-dmo-row" data-dmo="cpPhone" onclick={handleReconDmoToggle}>
+                                        <div class="recon-dmo-row__header">
+                                            <div class="recon-dmo-row__left">
+                                                <lightning-icon icon-name={cpPhoneChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                                <span class="recon-dmo-row__name">Contact Point Phone</span>
+                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
+                                                <div class="recon-dmo-row__meta">
+                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                    <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <template lwc:if={isCpPhoneExpanded}>
+                                            <div class="recon-dmo-row__fields">
+                                                <div class="recon-dmo-row__fields-actions">
+                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                                </div>
+                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Phone Type</div></td>
+                                                            <td><div class="slds-truncate">PhoneType</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Phone Number</div></td>
+                                                            <td><div class="slds-truncate">TelephoneNumber</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Country Code</div></td>
+                                                            <td><div class="slds-truncate">CountryDialingCode</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <!-- DMO: Contact Point Address -->
+                                    <div class="recon-dmo-row" data-dmo="cpAddress" onclick={handleReconDmoToggle}>
+                                        <div class="recon-dmo-row__header">
+                                            <div class="recon-dmo-row__left">
+                                                <lightning-icon icon-name={cpAddressChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                                <span class="recon-dmo-row__name">Contact Point Address</span>
+                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">4 fields</span>
+                                                <div class="recon-dmo-row__meta">
+                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                    <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <template lwc:if={isCpAddressExpanded}>
+                                            <div class="recon-dmo-row__fields">
+                                                <div class="recon-dmo-row__fields-actions">
+                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                                </div>
+                                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
+                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Street</div></td>
+                                                            <td><div class="slds-truncate">Street</div></td>
+                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">City</div></td>
+                                                            <td><div class="slds-truncate">City</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">State</div></td>
+                                                            <td><div class="slds-truncate">State</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><div class="slds-truncate">Postal Code</div></td>
+                                                            <td><div class="slds-truncate">PostalCode</div></td>
+                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    </div><!-- end recon-rules-list -->
+                                </div>
+
+                                <!-- Trusted Data Sources -->
+                                <div class="oc-section slds-m-bottom_medium">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
+                                        <h2 class="slds-text-heading_small">Trusted Data Sources</h2>
+                                        <div class="slds-col_bump-left">
+                                            <lightning-button label="Edit" variant="neutral"></lightning-button>
+                                        </div>
+                                    </div>
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th scope="col" style="width: 35%"><div class="slds-truncate">DMO</div></th>
+                                                <th scope="col" style="width: 65%"><div class="slds-truncate">Trusted Data Source</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><div class="slds-truncate">Individual</div></td>
+                                                <td><div class="slds-truncate">{individualDloLabel}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="slds-truncate">Contact Point Address</div></td>
+                                                <td><div class="slds-truncate">{contactPointAddressLabel}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="slds-truncate">Contact Point App</div></td>
+                                                <td><div class="slds-truncate">{contactPointAppLabel}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="slds-truncate">Contact Point Email</div></td>
+                                                <td><div class="slds-truncate">{contactPointEmailLabel}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="slds-truncate">Contact Point Social</div></td>
+                                                <td><div class="slds-truncate">{contactPointSocialLabel}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="slds-truncate">Contact Point Phone</div></td>
+                                                <td><div class="slds-truncate">{contactPointPhoneLabel}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="slds-truncate">Party ID</div></td>
+                                                <td><div class="slds-truncate">{partyIdLabel}</div></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                </lightning-tab>
+                                <lightning-tab label="Processing History" value="history">
+                                <div class="oc-section">
+                                    <!-- Header row -->
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                                        <div>
+                                            <h2 class="slds-text-heading_medium slds-m-bottom_xx-small">Ruleset History</h2>
+                                            <p class="slds-text-body_small slds-text-color_weak">This log includes all changes to your ruleset and ruleset runs. Incremental runs are grouped if multiple runs happen within the same period.</p>
+                                        </div>
+                                        <div class="slds-col_bump-left slds-grid slds-grid_vertical-align-center">
+                                            <lightning-button label="Download" variant="neutral" icon-name="utility:download" icon-position="left" class="slds-m-right_small"></lightning-button>
+                                            <lightning-input type="search" label="Search" variant="label-hidden" placeholder="Search..." class="slds-m-right_x-small"></lightning-input>
+                                            <lightning-button-icon icon-name="utility:filterList" variant="border-filled" alternative-text="Filter"></lightning-button-icon>
+                                        </div>
+                                    </div>
+
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout ruleset-history-table">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th scope="col" style="width: 3rem;"></th>
+                                                <th scope="col">
+                                                    <div class="slds-truncate">Date &amp; Time Duration
+                                                        <lightning-helptext content="Date and time of the job run, and its duration." icon-name="utility:info"></lightning-helptext>
                                                     </div>
-                                                </template>
-                                                <template lwc:elseif={row.isWarning}>
-                                                    <div class="slds-grid slds-grid_vertical-align-center">
-                                                        <lightning-icon icon-name="utility:warning" size="x-small" class="slds-m-right_xx-small status-warning"></lightning-icon>
-                                                        <span class="status-warning">{row.statusLabel}</span>
+                                                </th>
+                                                <th scope="col">
+                                                    <div class="slds-truncate">Run Reason
+                                                        <lightning-helptext content="What triggered this run." icon-name="utility:info"></lightning-helptext>
                                                     </div>
-                                                </template>
-                                                <template lwc:elseif={row.isError}>
-                                                    <div class="slds-grid slds-grid_vertical-align-center">
-                                                        <lightning-icon icon-name="utility:error" size="x-small" variant="error" class="slds-m-right_xx-small"></lightning-icon>
-                                                        <span class="slds-text-color_error">{row.statusLabel}</span>
-                                                    </div>
-                                                </template>
-                                            </td>
-                                            <td><div class="slds-truncate slds-text-color_weak">{row.jobId}</div></td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
+                                                </th>
+                                                <th scope="col"><div class="slds-truncate">Total Source Profiles</div></th>
+                                                <th scope="col"><div class="slds-truncate">Total Unified Profiles</div></th>
+                                                <th scope="col"><div class="slds-truncate">Total Known Records</div></th>
+                                                <th scope="col"><div class="slds-truncate">Filtered Records</div></th>
+                                                <th scope="col"><div class="slds-truncate">Processed Records</div></th>
+                                                <th scope="col"><div class="slds-truncate">Consolidatio...</div></th>
+                                                <th scope="col"><div class="slds-truncate">Status</div></th>
+                                                <th scope="col"><div class="slds-truncate">Job ID</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={rulesetHistoryList} for:item="row">
+                                                <tr key={row.id} class="slds-hint-parent">
+                                                    <td>
+                                                        <lightning-button-icon icon-name="utility:chevronright" variant="bare" size="small" alternative-text="Expand"></lightning-button-icon>
+                                                    </td>
+                                                    <td>
+                                                        <div class="slds-truncate">{row.dateTime}</div>
+                                                        <div class="slds-text-body_small slds-text-color_weak">{row.duration}</div>
+                                                    </td>
+                                                    <td><div class="slds-truncate">{row.runReason}</div></td>
+                                                    <td><div class="slds-truncate">{row.totalSourceProfiles}</div></td>
+                                                    <td><div class="slds-truncate">{row.totalUnifiedProfiles}</div></td>
+                                                    <td><div class="slds-truncate">{row.totalKnownRecords}</div></td>
+                                                    <td><div class="slds-truncate">{row.filteredRecords}</div></td>
+                                                    <td><div class="slds-truncate">{row.processedRecords}</div></td>
+                                                    <td><div class="slds-truncate">{row.consolidationRate}</div></td>
+                                                    <td>
+                                                        <template lwc:if={row.isSucceeded}>
+                                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                                <lightning-icon icon-name="utility:success" size="x-small" variant="success" class="slds-m-right_xx-small"></lightning-icon>
+                                                                <span class="slds-text-color_success">Succeeded</span>
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:elseif={row.isWarning}>
+                                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                                <lightning-icon icon-name="utility:warning" size="x-small" class="slds-m-right_xx-small status-warning"></lightning-icon>
+                                                                <span class="status-warning">{row.statusLabel}</span>
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:elseif={row.isError}>
+                                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                                <lightning-icon icon-name="utility:error" size="x-small" variant="error" class="slds-m-right_xx-small"></lightning-icon>
+                                                                <span class="slds-text-color_error">{row.statusLabel}</span>
+                                                            </div>
+                                                        </template>
+                                                    </td>
+                                                    <td><div class="slds-truncate slds-text-color_weak">{row.jobId}</div></td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </lightning-tab>
+                            </lightning-tabset>
                         </div>
-                        </lightning-tab>
-                    </lightning-tabset>
+
+                        <!-- Right: resolution summary widget -->
+                        <div class="oc-sidebar-col">
+                            <div class="oc-resolution-summary">
+                                <h3 class="oc-resolution-summary__title">Resolution Summary</h3>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Last Updated 06/25/2026</p>
+
+                                <div class="oc-summary-stat">
+                                    <div class="oc-summary-stat__header">
+                                        <span class="oc-summary-stat__label">Total Unified Profiles</span>
+                                        <span class="oc-summary-stat__value">435K</span>
+                                    </div>
+                                    <p class="oc-summary-stat__desc slds-text-color_weak">/ 580K Source Profiles</p>
+                                </div>
+
+                                <div class="oc-summary-stat">
+                                    <div class="oc-summary-stat__header">
+                                        <span class="oc-summary-stat__label">Consolidation Rate</span>
+                                        <span class="oc-summary-stat__value">75%</span>
+                                    </div>
+                                    <p class="oc-summary-stat__desc slds-text-color_weak">The number of source profiles that match another</p>
+                                </div>
+
+                                <div class="oc-summary-stat">
+                                    <div class="oc-summary-stat__header">
+                                        <span class="oc-summary-stat__label">Matched Source Profiles</span>
+                                        <span class="oc-summary-stat__value">435K</span>
+                                    </div>
+                                    <p class="oc-summary-stat__desc slds-text-color_weak">The number of source profiles that match another</p>
+                                </div>
+
+                                <div class="oc-summary-stat">
+                                    <div class="oc-summary-stat__header">
+                                        <span class="oc-summary-stat__label">Known Unified Profiles</span>
+                                        <span class="oc-summary-stat__value">370K</span>
+                                    </div>
+                                    <p class="oc-summary-stat__desc slds-text-color_weak">The number of unified profiles with known identity</p>
+                                </div>
+
+                                <div class="oc-summary-stat">
+                                    <div class="oc-summary-stat__header">
+                                        <span class="oc-summary-stat__label">Anonymous Unified Profiles</span>
+                                        <span class="oc-summary-stat__value">65K</span>
+                                    </div>
+                                    <p class="oc-summary-stat__desc slds-text-color_weak">The number of unified profiles without known identity</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>

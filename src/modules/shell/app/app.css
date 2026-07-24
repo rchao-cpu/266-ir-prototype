@@ -84,3 +84,36 @@ lightning-badge {
 :host:has(page-ir266) ui-global-navigation {
     display: none;
 }
+
+/* Home FAB */
+.home-fab {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: #fffbcc;
+    border: 1.5px solid #e0c800;
+    border-radius: 2rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+.home-fab:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    transform: translateY(-2px);
+}
+.home-fab__icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: #7a6000;
+    flex-shrink: 0;
+}
+.home-fab__label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #7a6000;
+}

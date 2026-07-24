@@ -2,7 +2,7 @@ import { LightningElement, track } from 'lwc';
 import PreviewResultsModal from 'ui/previewResultsModal';
 import { navigate } from '../../../router';
 
-export default class Ir266 extends LightningElement {
+export default class Ir266Plan extends LightningElement {
     @track scenario = 1; // 1 = Excellent, 2 = Needs Fixing
     @track selectedFix = null; // 'auto' | 'guided'
     @track showLandingPage = true; // Show landing page initially
@@ -29,12 +29,11 @@ export default class Ir266 extends LightningElement {
     @track showOperateCertify = false; // True after saving the ruleset setup
     @track showRulesetList = false; // True after first ruleset is created
     @track isEditMode = false; // True when editing from record home
+    @track isBeginDropdownOpen = false;
     @track caseSensitive = false;
     @track guidanceExpanded = true;
     @track expandedReconDmos = {};
     @track jobRunMode = null; // 'automatic' | 'manual'
-    @track pauseAutomaticRuns = false;
-    @track jobFrequency = 'daily';
     // Track which contact point fields have been manually overridden
     _manuallySet = new Set();
 
@@ -271,6 +270,7 @@ export default class Ir266 extends LightningElement {
 
     get isAutomaticMode() { return this.jobRunMode === 'automatic'; }
     get isManualMode() { return this.jobRunMode === 'manual'; }
+
     get automaticCardClass() {
         return this.jobRunMode === 'automatic'
             ? 'visual-picker-card visual-picker-selected slds-p-around_medium'
@@ -284,8 +284,6 @@ export default class Ir266 extends LightningElement {
 
     handleSelectAutomatic() { this.jobRunMode = 'automatic'; }
     handleSelectManual() { this.jobRunMode = 'manual'; }
-    handlePauseAutoToggle(event) { this.pauseAutomaticRuns = event.target.checked; }
-    handleJobFrequencyChange(event) { this.jobFrequency = event.detail.value; }
 
     get strategyOptions() {
         return [
@@ -333,6 +331,29 @@ export default class Ir266 extends LightningElement {
     handleRouteSelect(event) {
         const route = event.currentTarget.dataset.route;
         this.selectedRoute = route;
+    }
+
+    handleBeginDropdownToggle(event) {
+        // Only toggle if the chevron button or its children were clicked
+        const chevron = event.currentTarget.querySelector('.plan-begin-chevron');
+        if (chevron && (event.target === chevron || chevron.contains(event.target))) {
+            event.stopPropagation();
+            this.isBeginDropdownOpen = !this.isBeginDropdownOpen;
+        }
+    }
+
+    handleBeginClick(event) {
+        event.stopPropagation();
+        this.isBeginDropdownOpen = !this.isBeginDropdownOpen;
+    }
+
+    handleRouteDropdownSelect(event) {
+        event.stopPropagation();
+        const route = event.currentTarget.dataset.route;
+        this.selectedRoute = route;
+        this.isBeginDropdownOpen = false;
+        this.showLandingPage = false;
+        this.currentStep = 1;
     }
 
     // Start configuration from landing page
@@ -520,36 +541,6 @@ export default class Ir266 extends LightningElement {
         this.selectedRoute = null;
     }
 
-    handleGoHome() {
-        navigate('/app/ir-intro');
-    }
-
-    handleGuidanceToggle() {
-        this.guidanceExpanded = !this.guidanceExpanded;
-    }
-
-    handleReconDmoToggle(event) {
-        const dmo = event.currentTarget.dataset.dmo;
-        this.expandedReconDmos = {
-            ...this.expandedReconDmos,
-            [dmo]: !this.expandedReconDmos[dmo]
-        };
-    }
-
-    isReconDmoExpanded(dmo) {
-        return !!this.expandedReconDmos[dmo];
-    }
-
-    get isIndividualExpanded() { return !!this.expandedReconDmos['individual']; }
-    get isCpEmailExpanded() { return !!this.expandedReconDmos['cpEmail']; }
-    get isCpPhoneExpanded() { return !!this.expandedReconDmos['cpPhone']; }
-    get isCpAddressExpanded() { return !!this.expandedReconDmos['cpAddress']; }
-
-    get individualChevron() { return this.isIndividualExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
-    get cpEmailChevron() { return this.isCpEmailExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
-    get cpPhoneChevron() { return this.isCpPhoneExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
-    get cpAddressChevron() { return this.isCpAddressExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
-
     handleCaseSensitiveChange(event) {
         this.caseSensitive = event.target.checked;
     }
@@ -627,6 +618,32 @@ export default class Ir266 extends LightningElement {
         this._manuallySet.add('partyId');
         this.partyId = event.detail.value;
     }
+
+    handleGoHome() {
+        navigate('/app/ir-intro');
+    }
+
+    handleGuidanceToggle() {
+        this.guidanceExpanded = !this.guidanceExpanded;
+    }
+
+    handleReconDmoToggle(event) {
+        const dmo = event.currentTarget.dataset.dmo;
+        this.expandedReconDmos = {
+            ...this.expandedReconDmos,
+            [dmo]: !this.expandedReconDmos[dmo]
+        };
+    }
+
+    get isIndividualExpanded() { return !!this.expandedReconDmos['individual']; }
+    get isCpEmailExpanded() { return !!this.expandedReconDmos['cpEmail']; }
+    get isCpPhoneExpanded() { return !!this.expandedReconDmos['cpPhone']; }
+    get isCpAddressExpanded() { return !!this.expandedReconDmos['cpAddress']; }
+
+    get individualChevron() { return this.isIndividualExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
+    get cpEmailChevron() { return this.isCpEmailExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
+    get cpPhoneChevron() { return this.isCpPhoneExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
+    get cpAddressChevron() { return this.isCpAddressExpanded ? 'utility:chevrondown' : 'utility:chevronright'; }
 
     // Resolution tabs
     handleResolutionTabChange(event) {

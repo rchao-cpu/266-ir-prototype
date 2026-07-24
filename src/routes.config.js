@@ -47,10 +47,27 @@ export const routes = [
     app: 'builder',
   },
   {
+    path: '/ir-intro',
+    component: 'page-ir-intro',
+    title: 'Agentic IR — Prototype Hub',
+    navPage: 'ir-intro',
+    navLabel: 'Agentic IR',
+  },
+  {
     path: '/ir266',
     component: 'page-ir266',
-    title: 'IR 266 - Identity Resolution',
-    navPage: 'ir266',
-    navLabel: 'IR 266',
+    title: 'IR 266 — North Star',
+  },
+  {
+    path: '/ir266-plan',
+    component: 'page-ir266-plan',
+    title: 'IR 266 — 266 Plan',
+  },
+  {
+    path: '/resolution-summary',
+    component: 'page-ir-resolution-summary',
+    title: 'Resolution Summary',
+    navPage: 'resolution-summary',
+    navLabel: 'Resolution Summary',
   },
 ];

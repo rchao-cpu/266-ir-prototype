@@ -20,11 +20,11 @@ export const APP_STORAGE_KEY = 'shell-current-app';
 export const apps = [
   {
     id: 'standard',
-    label: 'Standard App',
+    label: 'Data 360',
     variant: 'standard',
     pathPrefix: '/app',
-    defaultPath: '/app',
-    pages: ['home', 'icons', 'contacts', 'ir266'],
+    defaultPath: '/app/ir-intro',
+    pages: ['ir-intro'],
   },
   {
     id: 'console',
