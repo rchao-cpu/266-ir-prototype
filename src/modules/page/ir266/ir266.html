@@ -349,13 +349,69 @@
                         </div>
                     </div>
 
+                    <!-- Jump in with your first use case -->
+                    <div class="jump-in-section slds-m-top_medium">
+                        <lightning-layout multiple-rows>
+                            <!-- Left: intro text -->
+                            <lightning-layout-item size="4" padding="around-medium">
+                                <h2 class="slds-text-heading_medium slds-m-bottom_x-small" style="color:#0b5cab;">Jump in with your first use case</h2>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Speed up time-to-value with quick starts for common use cases.</p>
+                                <div class="jump-in-bullets slds-m-bottom_medium">
+                                    <div class="jump-in-bullet">
+                                        <lightning-icon icon-name="utility:list" size="xx-small" class="slds-m-right_x-small"></lightning-icon>
+                                        <span class="slds-text-body_small">Curated step-by-step use cases that you can pause and start up at any time.</span>
+                                    </div>
+                                    <div class="jump-in-bullet slds-m-top_x-small">
+                                        <lightning-icon icon-name="utility:refresh" size="xx-small" class="slds-m-right_x-small"></lightning-icon>
+                                        <span class="slds-text-body_small">You can re-use plans over and over.</span>
+                                    </div>
+                                </div>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">Don't see a plan that suits your needs? Talk to our agent and we can guide you step by step.</p>
+                                <lightning-button
+                                    label="Talk to Our Agent"
+                                    variant="brand"
+                                    icon-name="utility:einstein"
+                                    icon-position="left">
+                                </lightning-button>
+                            </lightning-layout-item>
+                            <!-- Card: Bring in New Data -->
+                            <lightning-layout-item size="4" padding="around-medium">
+                                <div class="jump-in-card">
+                                    <div class="jump-in-card__icon">
+                                        <lightning-icon icon-name="standard:data_model" size="medium"></lightning-icon>
+                                    </div>
+                                    <h3 class="slds-text-heading_small slds-m-top_small slds-m-bottom_x-small">Bring in New Data</h3>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">Connect new data sources and organize your new data by mapping it to the data model.</p>
+                                    <div class="jump-in-card__tags">
+                                        <span class="jump-in-tag">Data 360 Beginner</span>
+                                        <span class="jump-in-tag">New Data</span>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                            <!-- Card: Publish a Campaign -->
+                            <lightning-layout-item size="4" padding="around-medium">
+                                <div class="jump-in-card">
+                                    <div class="jump-in-card__icon">
+                                        <lightning-icon icon-name="standard:data_model" size="medium"></lightning-icon>
+                                    </div>
+                                    <h3 class="slds-text-heading_small slds-m-top_small slds-m-bottom_x-small">Publish a Campaign with External Customer Data</h3>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">Add data from external sources, consolidate fragmented customer data into unified profiles, then build a segment and activate.</p>
+                                    <div class="jump-in-card__tags">
+                                        <span class="jump-in-tag">Data 360 Beginner</span>
+                                        <span class="jump-in-tag">Unified Data</span>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+
                     <!-- Route Selection (hidden once a ruleset has been created) -->
                     <template lwc:if={showCreateRuleset}>
                     <div class="slds-m-top_medium slds-m-bottom_small"></div>
                     <lightning-card>
                         <div class="slds-p-around_medium">
-                            <h2 class="slds-text-heading_medium slds-text-align_center slds-m-bottom_small">Create your first Ruleset to merge your customer profiles</h2>
-                            <p class="slds-text-body_small slds-text-align_center slds-m-bottom_large">Select how you want to create your ruleset</p>
+                            <h2 class="slds-text-heading_medium slds-text-align_center slds-m-bottom_small">Don't have a plan in mind yet? Just start below</h2>
+                            <p class="slds-text-body_small slds-text-align_center slds-m-bottom_large">Clean and merge your customer data accurately with rulesets - through D360 configurations your own existing setup</p>
                             <lightning-layout multiple-rows>
                                 <lightning-layout-item size="4" padding="around-small">
                                     <div class={getRouteCardClass} data-route="unify" onclick={handleRouteSelect}>
@@ -381,7 +437,7 @@
                                             </div>
                                         </template>
                                         <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Import MDM</h3>
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Import from your MDM plan</h3>
                                             <p class="slds-text-body_small slds-text-color_weak">Import pre-existing rulesets from Master Data Management systems</p>
                                         </div>
                                     </div>
@@ -403,9 +459,9 @@
 
                             <div class="slds-text-align_center slds-m-top_large">
                                 <lightning-button
-                                    label="Begin"
+                                    label="New"
                                     variant="brand"
-                                    onclick={handleStartConfiguration}>
+                                    onclick={handleNewRuleset}>
                                 </lightning-button>
                             </div>
                         </div>
@@ -476,112 +532,264 @@
             </div>
         </template>
 
-        <!-- Step Navigation -->
-        <div class="slds-col slds-p-horizontal_small step-nav-column" lwc:if={showStepNavColumn}>
-            <div class="step-nav-header">
-                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_xx-small">
-                    <h2 class="slds-text-heading_small">Identity Resolution</h2>
-                    <lightning-button
-                        label="Agent Help"
-                        variant="neutral"
-                        onclick={handleOpenChat}>
-                    </lightning-button>
+        <!-- Determine Type of Ruleset task panel -->
+        <template lwc:if={isDetermineTask}>
+            <div class="wizard-canvas-layout">
+                <div class="canvas-page__header">
+                    <div class="canvas-page__header-inner">
+                        <div class="canvas-page__heading">
+                            <p class="canvas-page__eyebrow">Identity Resolution</p>
+                            <h1 class="canvas-page__title">Create New Ruleset</h1>
+                        </div>
+                        <div class="canvas-page__header-actions">
+                            <lightning-button label="Help" icon-name="utility:question" variant="neutral" onclick={handleOpenChat}></lightning-button>
+                        </div>
+                    </div>
                 </div>
-                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">Sequential guided experience</p>
+                <div class="wizard-canvas-body">
+                    <div class="wizard-progress-nav">
+                        <ol class="wizard-progress-list">
+                            <li class={progressStep0Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Ruleset build type selection</span>
+                            </li>
+                            <li class={progressStep1Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Profile unification type selection</span>
+                            </li>
+                            <li class={progressStep2Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">General info setup</span>
+                            </li>
+                            <li class={progressStep3Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Match rule config</span>
+                            </li>
+                            <li class={progressStep4Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Reconciliation rule config</span>
+                            </li>
+                            <li class={progressStep5Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Trusted source (optional)</span>
+                            </li>
+                            <li class={progressStep6Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Filters (optional)</span>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="canvas-detail-panel">
+                        <div class="canvas-content-card">
+                        <div class="canvas-detail-panel__content">
+                        <div class="determine-new-layout">
+                            <!-- Left: entity type cards + other unification types -->
+                            <div class="determine-new-left">
+                                <h3 class="step1-section__title slds-m-bottom_x-small">What records would you like to consolidate?</h3>
+                                <p class="slds-text-body_regular slds-text-color_weak slds-m-bottom_x-small">Choose the type of entity you want to resolve and unify into a single profile.</p>
+                                <a href="#" class="determine-tell-more" onclick={handlePreventDefault}>Tell Me More</a>
+                                <!-- 3 horizontal entity type cards -->
+                                <div class="determine-entity-cards">
+                                    <div class={individualPickerClass}>
+                                        <template lwc:if={isIndividualPickerSelected}>
+                                            <div class="visual-picker-checkmark">
+                                                <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
+                                            </div>
+                                        </template>
+                                        <div class="slds-p-around_medium">
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Individuals</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">Unify individual customer records</p>
+                                        </div>
+                                    </div>
+                                    <div class={householdPickerClass}>
+                                        <div class="slds-p-around_medium">
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Households</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">Consolidate household-level records</p>
+                                        </div>
+                                    </div>
+                                    <div class={accountPickerClass}>
+                                        <div class="slds-p-around_medium">
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Accounts</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">Merge business account records</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Other Unification Types -->
+                                <div class="determine-other-types">
+                                    <h4 class="determine-other-types__heading">Other Unification Types</h4>
+                                    <div class="determine-other-types__body">
+                                        <p class="slds-text-body_small slds-text-color_weak">None yet, but this option is possible for you if you did xyz. <a href="#" onclick={handlePreventDefault}>Learn More</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Right: info sidebar -->
+                            <div class="determine-new-sidebar">
+                                <div class="determine-picker-detail">
+                                    <h4 class="determine-detail__heading slds-m-bottom_medium">Unify Unmatched Records</h4>
+                                    <div class="determine-detail__section">
+                                        <p class="determine-detail__label">What this means</p>
+                                        <p class="slds-text-body_small slds-text-color_weak">Identity Resolution scans your Data Cloud data sources for duplicate records and consolidates them into a single unified profile per customer.</p>
+                                    </div>
+                                    <div class="determine-detail__section">
+                                        <p class="determine-detail__label">Setup steps</p>
+                                        <p class="slds-text-body_small slds-text-color_weak">Configure general details, a match strategy, and optional reconciliation rules, trusted sources, and filters.</p>
+                                    </div>
+                                    <div class="determine-detail__section">
+                                        <p class="determine-detail__label">Best for</p>
+                                        <p class="slds-text-body_small slds-text-color_weak">Organizations ingesting customer data from multiple disconnected sources that need a single source of truth.</p>
+                                    </div>
+                                    <div class="determine-detail__section">
+                                        <p class="determine-detail__label">Expected outcome</p>
+                                        <p class="slds-text-body_small slds-text-color_weak">A unified profile for each unique individual that aggregates data from all matching source records.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div><!-- end canvas-detail-panel__content -->
+                        <div class="canvas-detail-panel__footer">
+                            <lightning-button label="Cancel" variant="neutral" onclick={handleDetermineCancel}></lightning-button>
+                            <span class="wizard-panel__footer-progress">Step 1 of 7</span>
+                            <div class="wizard-panel__footer-spacer"></div>
+                            <lightning-button label="Next" variant="brand" onclick={handleDetermineNext}></lightning-button>
+                        </div>
+                        </div><!-- end canvas-content-card -->
+                    </div><!-- end canvas-detail-panel -->
+                </div><!-- end wizard-canvas-body -->
+            </div><!-- end wizard-canvas-layout -->
+        </template>
+
+        <!-- Loading state -->
+        <template lwc:if={isLoadingTask}>
+            <div class="wizard-canvas-layout">
+                <div class="canvas-page__header">
+                    <div class="canvas-page__header-inner">
+                        <div class="canvas-page__heading">
+                            <p class="canvas-page__eyebrow">Identity Resolution</p>
+                            <h1 class="canvas-page__title">Create New Ruleset</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-canvas-body">
+                    <div class="wizard-progress-nav">
+                        <ol class="wizard-progress-list">
+                            <li class={progressStep0Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Ruleset build type selection</span>
+                            </li>
+                            <li class={progressStep1Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Profile unification type selection</span>
+                            </li>
+                            <li class={progressStep2Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">General info setup</span>
+                            </li>
+                            <li class={progressStep3Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Match rule config</span>
+                            </li>
+                            <li class={progressStep4Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Reconciliation rule config</span>
+                            </li>
+                            <li class={progressStep5Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Trusted source (optional)</span>
+                            </li>
+                            <li class={progressStep6Class}>
+                                <div class="wizard-progress-marker"></div>
+                                <span class="wizard-progress-label">Filters (optional)</span>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="canvas-detail-panel">
+                        <div class="canvas-content-card">
+                        <div class="canvas-detail-panel__content">
+                            <div class="task-loading-content">
+                                <div class="task-loading-spinner">
+                                    <div class="slds-spinner_container" style="position:relative;height:4rem;width:4rem;">
+                                        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                                            <span class="slds-assistive-text">Loading</span>
+                                            <div class="slds-spinner__dot-a"></div>
+                                            <div class="slds-spinner__dot-b"></div>
+                                        </div>
+                                    </div>
+                                    <p class="slds-text-body_regular slds-text-color_weak slds-m-top_large">Preparing your configuration...</p>
+                                </div>
+                            </div>
+                        </div>
+                        </div><!-- end canvas-content-card -->
+                    </div>
+                </div>
             </div>
+        </template>
 
-            <!-- Group: Required Setup -->
-            <template lwc:if={showOptionalSteps}>
-                <p class="step-section-header slds-m-bottom_x-small">Required Setup</p>
-            </template>
-
-            <!-- Step 1: General Details -->
-            <article class={step1CardClass} data-step="1" onclick={handleStepClick}>
-                <div class="step-card-content">
-                    <div class="step-card-body">
-                        <h4 class="step-card-title">General Details</h4>
-                        <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Step 2: Job Schedule -->
-            <article class={step2CardClass} data-step="2" onclick={handleStepClick}>
-                <div class="step-card-content">
-                    <div class="step-card-body">
-                        <h4 class="step-card-title">Job Schedule</h4>
-                        <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Step 3: Trusted Sources — Required Setup when Import MDM -->
-            <template lwc:if={step2Required}>
-                <article class={step3CardClass} data-step="3" onclick={handleStepClick}>
-                    <div class="step-card-content">
-                        <div class="step-card-body">
-                            <h4 class="step-card-title">Trusted Sources</h4>
-                            <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                        </div>
-                    </div>
-                </article>
-            </template>
-
-            <!-- Group: Optional Configurations (hidden in edit mode) -->
-            <template lwc:if={showOptionalSteps}>
-                <p class="step-section-header slds-m-top_medium slds-m-bottom_x-small">Optional Configurations</p>
-
-                <!-- Step 3: Trusted Sources — Optional when not Import MDM -->
-                <template lwc:if={showTrustedSourcesAsOptional}>
-                    <article class={step3CardClass} data-step="3" onclick={handleStepClick}>
-                        <div class="step-card-content">
-                            <div class="step-card-body">
-                                <h4 class="step-card-title">Trusted Sources</h4>
-                                <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                            </div>
-                        </div>
-                    </article>
-                </template>
-
-                <!-- Steps 4–6 hidden for MDM import -->
-                <template lwc:if={showMatchReconSteps}>
-                    <!-- Step 4: Generate Match Rules -->
-                    <article class={step4CardClass} data-step="4" onclick={handleStepClick}>
-                        <div class="step-card-content">
-                            <div class="step-card-body">
-                                <h4 class="step-card-title">Generate Match Rules</h4>
-                                <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Step 5: Generate Reconciliation Rules -->
-                    <article class={step5CardClass} data-step="5" onclick={handleStepClick}>
-                        <div class="step-card-content">
-                            <div class="step-card-body">
-                                <h4 class="step-card-title">Generate Reconciliation Rules</h4>
-                                <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Step 6: Set Up Filters -->
-                    <article class={step6CardClass} data-step="6" onclick={handleStepClick}>
-                        <div class="step-card-content">
-                            <div class="step-card-body">
-                                <h4 class="step-card-title">Set Up Filters</h4>
-                                <p class="step-card-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-                            </div>
-                        </div>
-                    </article>
-                </template>
-            </template>
-
+        <!-- Step Navigation (edit mode only) -->
+        <div class={guideNavClass} lwc:if={isEditMode} onclick={handleGuideNavCollapseClick}>
+            <div class={step1NavRowClass} data-step="1" onclick={handleStepClick}>
+                <span class={step1NavIconClass}>
+                    <lightning-icon icon-name="utility:settings" size="x-small" variant="inverse"></lightning-icon>
+                </span>
+                <span class="flat-step-label">Unify customer profiles</span>
+            </div>
+            <div class="qsl-step-nav__collapse" onclick={handleCollapseGuideNav}>
+                <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                <span>Collapse</span>
+            </div>
+            <div class="qsl-step-nav__expand">
+                <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+            </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="slds-col slds-p-horizontal_small main-content-area" lwc:if={showStepNavAndContent}>
-            <div class="step-content-scroll">
+        <!-- Main Content Area (Setup) -->
+        <div class="wizard-canvas-layout" lwc:if={showStepNavAndContent}>
+            <div class="canvas-page__header">
+                <div class="canvas-page__header-inner">
+                    <div class="canvas-page__heading">
+                        <p class="canvas-page__eyebrow">Identity Resolution</p>
+                        <h1 class="canvas-page__title">Create New Ruleset</h1>
+                    </div>
+                    <div class="canvas-page__header-actions">
+                        <lightning-button label="Help" icon-name="utility:question" variant="neutral" onclick={handleOpenChat}></lightning-button>
+                    </div>
+                </div>
+            </div>
+            <div class="wizard-canvas-body">
+                <div class="wizard-progress-nav">
+                    <ol class="wizard-progress-list">
+                        <li class={progressStep0Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">Ruleset build type selection</span>
+                        </li>
+                        <li class={progressStep1Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">Profile unification type selection</span>
+                        </li>
+                        <li class={progressStep2Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">General info setup</span>
+                        </li>
+                        <li class={progressStep3Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">Match rule config</span>
+                        </li>
+                        <li class={progressStep4Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">Reconciliation rule config</span>
+                        </li>
+                        <li class={progressStep5Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">Trusted source (optional)</span>
+                        </li>
+                        <li class={progressStep6Class}>
+                            <div class="wizard-progress-marker"></div>
+                            <span class="wizard-progress-label">Filters (optional)</span>
+                        </li>
+                    </ol>
+                </div>
+                <div class="canvas-detail-panel">
+                    <div class="canvas-content-card">
+                    <div class="canvas-detail-panel__content">
             <!-- Selected Route Header -->
             <template lwc:if={selectedRoute}>
                 <div class="slds-page-header slds-m-bottom_medium">
@@ -633,8 +841,8 @@
                         <!-- Section: What records will this ruleset consolidate? (hidden in edit mode) -->
                         <template lwc:if={showRecommendationBanners}>
                         <div class="step1-section">
-                            <h3 class="step1-section__title">What records will this ruleset consolidate?</h3>
-                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">Choose the entity type you want to create unified records for</p>
+                            <p class="slds-text-body_regular slds-m-bottom_medium">Rulesets contain match and reconciliation rules that tell identity resolution how to identify matching profiles and consolidate them. You can only process one type of record per ruleset. <a href="#" class="slds-text-link">Tell Me More</a></p>
+                            <h3 class="step1-section__title slds-m-bottom_medium">What records will this ruleset consolidate?</h3>
 
                             <lightning-layout multiple-rows>
                                 <lightning-layout-item size="4" padding="around-small">
@@ -645,31 +853,51 @@
                                         </div>
                                         </template>
                                         <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">
-                                                Individual
-                                                <lightning-badge label="Recommended" class="slds-m-left_x-small"></lightning-badge>
+                                            <h3 class="entity-picker-card__title">
+                                                Individuals
+                                                <lightning-badge label="+ Recommended" class="slds-m-left_x-small strategy-badge--high"></lightning-badge>
                                             </h3>
-                                            <p class="slds-text-body_small slds-text-color_weak">Create unified person profiles across your data sources</p>
+                                            <p class="slds-text-body_small slds-text-color_weak">Consolidate data about people into comprehensive unified individual profiles.</p>
                                         </div>
                                     </div>
                                 </lightning-layout-item>
                                 <lightning-layout-item size="4" padding="around-small">
                                     <div class={pickerDisabledClass}>
                                         <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Account</h3>
-                                            <p class="slds-text-body_small slds-text-color_weak">Create unified business/company profiles</p>
+                                            <h3 class="entity-picker-card__title entity-picker-card__title_muted">Households</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">Group unified individuals into household units. You must unify Individuals before creating households.</p>
                                         </div>
                                     </div>
                                 </lightning-layout-item>
                                 <lightning-layout-item size="4" padding="around-small">
                                     <div class={pickerDisabledClass}>
                                         <div class="slds-p-around_medium">
-                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Household</h3>
-                                            <p class="slds-text-body_small slds-text-color_weak">Group individuals into household units</p>
+                                            <h3 class="entity-picker-card__title entity-picker-card__title_muted">Accounts</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">Consolidate data about business accounts into comprehensive unified account profiles.</p>
                                         </div>
                                     </div>
                                 </lightning-layout-item>
                             </lightning-layout>
+
+                            <div class="entity-picker__other-section slds-m-top_large">
+                                <h4 class="entity-picker__other-title slds-m-bottom_medium">Other Unification Types</h4>
+                                <div class="entity-picker__empty-state">
+                                    <div class="entity-picker__illustration">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="160" height="128" aria-hidden="true">
+                                            <circle cx="75" cy="88" r="52" fill="#dde9ff"/>
+                                            <rect x="95" y="65" width="68" height="18" rx="9" fill="#7db4f7" transform="rotate(-28 95 65)"/>
+                                            <rect x="83" y="83" width="46" height="14" rx="7" fill="#5b9cf6" transform="rotate(-28 83 83)"/>
+                                            <circle cx="138" cy="53" r="11" fill="#4a86e8"/>
+                                            <line x1="96" y1="106" x2="82" y2="135" stroke="#aac4f8" stroke-width="3" stroke-linecap="round"/>
+                                            <line x1="96" y1="106" x2="96" y2="138" stroke="#aac4f8" stroke-width="3" stroke-linecap="round"/>
+                                            <line x1="96" y1="106" x2="110" y2="135" stroke="#aac4f8" stroke-width="3" stroke-linecap="round"/>
+                                            <circle cx="52" cy="58" r="5" fill="#b3cef9" opacity="0.7"/>
+                                            <circle cx="155" cy="110" r="4" fill="#b3cef9" opacity="0.6"/>
+                                        </svg>
+                                    </div>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-text-align_center">None yet, but this option is possible for you if you did xyz! <a href="#" class="slds-text-link">Learn More</a></p>
+                                </div>
+                            </div>
                         </div>
                         </template>
 
@@ -709,8 +937,10 @@
                         </div>
                     </template>
 
-                    <!-- Step 2: Job Schedule -->
+                    <!-- Step 2: Job Schedule (V1) / Match Rules (V2) -->
                     <template lwc:elseif={isStep2}>
+                        <!-- V1: Full Job Schedule + Match Rules picker -->
+                        <template lwc:if={isScenario1}>
                         <div class="step1-section">
                             <div class="slds-m-bottom_large">
                                 <h2 class="slds-text-heading_small slds-m-bottom_x-small">Job Run Mode</h2>
@@ -729,11 +959,11 @@
                                                 </span>
                                             </template>
                                             <div class="slds-media">
-                                                <div class="slds-media__figure slds-m-right_small">
-                                                    <lightning-icon icon-name="utility:refresh" size="small" variant="brand"></lightning-icon>
-                                                </div>
                                                 <div class="slds-media__body">
-                                                    <h3 class="slds-text-title_caps slds-text-color_default slds-m-bottom_x-small">Automatic</h3>
+                                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
+                                                        <h3 class="slds-text-title_caps slds-text-color_default">Automatic</h3>
+                                                        <ui-badge-with-tooltip class="slds-m-left_x-small" heading="Why AI selected Automatic" body="Your org's data volume and change frequency makes continuous automatic resolution the optimal choice — it keeps unified profiles fresh within hours of source record updates, supporting real-time segmentation and activation use cases."></ui-badge-with-tooltip>
+                                                    </div>
                                                     <p class="slds-text-body_small slds-text-color_weak">
                                                         Salesforce automatically schedules and runs identity resolution jobs on a set cadence. Jobs start as soon as your ruleset is activated and run continuously on your chosen schedule.
                                                     </p>
@@ -751,9 +981,6 @@
                                                 </span>
                                             </template>
                                             <div class="slds-media">
-                                                <div class="slds-media__figure slds-m-right_small">
-                                                    <lightning-icon icon-name="utility:touch_action" size="small" variant="brand"></lightning-icon>
-                                                </div>
                                                 <div class="slds-media__body">
                                                     <h3 class="slds-text-title_caps slds-text-color_default slds-m-bottom_x-small">Manual</h3>
                                                     <p class="slds-text-body_small slds-text-color_weak">
@@ -805,87 +1032,412 @@
                                 </template>
 
                             </div>
-                        </div>
-                    </template>
 
-                    <!-- Step 3: Trusted Sources -->
-                    <template lwc:elseif={isStep3}>
+                            <!-- Match Rules (merged into Step 1) -->
+                            <div class="step1-section slds-m-top_large">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                                    <h3 class="step1-section__title">Choose Your Match Strategy</h3>
+                                    </div>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_large">Select a strategy and review the AI-recommended match rules</p>
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="3" padding="around-small">
+                                        <div class={conservativeCardClass} data-strategy="conservative" onclick={handleStrategySelect}>
+                                            <template lwc:if={isConservativeSelected}><div class="visual-picker-checkmark"><lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon></div></template>
+                                            <div class="slds-p-around_medium">
+                                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">Conservative</h3>
+                                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">High precision, minimal false positives</p>
+                                                <p class="slds-text-body_small strategy-use-case">Best for financial services, healthcare, or any business where merging the wrong profiles creates compliance risk.</p>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="3" padding="around-small">
+                                        <div class={typicalCardClass} data-strategy="typical" onclick={handleStrategySelect}>
+                                            <template lwc:if={isTypicalSelected}><div class="visual-picker-checkmark"><lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon></div></template>
+                                            <div class="slds-p-around_medium">
+                                                                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">Typical <lightning-badge label="High" class="slds-m-left_x-small strategy-badge--high"></lightning-badge></h3>
+                                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">Balanced precision and recall</p>
+                                                <p class="slds-text-body_small strategy-use-case">Ideal for retail or B2C brands that want clean customer profiles without over-merging distinct individuals.</p>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="3" padding="around-small">
+                                        <div class={looseCardClass} data-strategy="loose" onclick={handleStrategySelect}>
+                                            <template lwc:if={isLooseSelected}><div class="visual-picker-checkmark"><lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon></div></template>
+                                            <div class="slds-p-around_medium">
+                                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">Loose</h3>
+                                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">High recall, more matches</p>
+                                                <p class="slds-text-body_small strategy-use-case">Good for media, entertainment, or loyalty programs where maximizing profile consolidation matters more than strict accuracy.</p>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <div class="slds-m-top_large">
+                                    <template lwc:if={isConservativeSelected}>
+                                        <div class="match-rules-list">
+                                            <div class="match-rules-list__header"><span>Recommended Match Rules (3)</span><lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Exact Name + Email + Phone</p><p class="match-rule-row__desc">Requires an exact match on the customer's full name, email address, and phone number across all sources.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Exact Name + Address + Phone</p><p class="match-rule-row__desc">Matches profiles where the full name, mailing address, and phone number are all identical.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Exact SSN</p><p class="match-rule-row__desc">Pairs a fuzzy name comparison with an exact Social Security Number match.</p></div></div>
+                                        </div>
+                                    </template>
+                                    <template lwc:if={isTypicalSelected}>
+                                        <div class="match-rules-list">
+                                            <div class="match-rules-list__header"><span>Recommended Match Rules (3)</span><lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Email + Phone</p><p class="match-rule-row__desc">Allows slight name variations while still requiring both email and phone to match.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Email + Phone Match</p><p class="match-rule-row__desc">Merges any two records that share the same email address and phone number.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Exact DOB</p><p class="match-rule-row__desc">Combines a fuzzy name check with an exact date-of-birth match.</p></div></div>
+                                        </div>
+                                    </template>
+                                    <template lwc:if={isLooseSelected}>
+                                        <div class="match-rules-list">
+                                            <div class="match-rules-list__header"><span>Recommended Match Rules (3)</span><lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Email</p><p class="match-rule-row__desc">Merges profiles with a similar name and matching email address.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Email Only Match</p><p class="match-rule-row__desc">Merges any two records that share the same email address.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Phone Only Match</p><p class="match-rule-row__desc">Merges profiles on phone number alone.</p></div></div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-m-top_large slds-text-align_center">
+                                    <lightning-button label="Create Custom Match Rules" variant="neutral" icon-name="utility:add" onclick={handleOpenCustomMatchRulesModal}></lightning-button>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">Advanced: Define your own matching criteria</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>
+                        </template>
+
+                        <!-- V2: Match Rules strategy picker + rules list only -->
+                        <template lwc:elseif={isScenario2}>
                         <div class="step1-section">
-                        <!-- DLO Selection -->
-                        <div class="slds-m-bottom_medium">
-                            <lightning-combobox
-                                label="Individual"
-                                placeholder="Select from Dropdown..."
-                                options={dloOptions}
-                                value={individualDlo}
-                                required={step2Required}
-                                onchange={handleIndividualDloChange}
-                                class="slds-m-bottom_medium">
-                            </lightning-combobox>
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                                <h3 class="step1-section__title">Choose Your Match Strategy</h3>
+                            </div>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_large">Select a strategy and review the AI-recommended match rules</p>
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class={conservativeCardClass} data-strategy="conservative" onclick={handleStrategySelect}>
+                                        <template lwc:if={isConservativeSelected}><div class="visual-picker-checkmark"><lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon></div></template>
+                                        <div class="slds-p-around_medium">
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Conservative</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">High precision, minimal false positives</p>
+                                            <p class="slds-text-body_small strategy-use-case">Best for financial services, healthcare, or any business where merging the wrong profiles creates compliance risk.</p>
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class={typicalCardClass} data-strategy="typical" onclick={handleStrategySelect}>
+                                        <template lwc:if={isTypicalSelected}><div class="visual-picker-checkmark"><lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon></div></template>
+                                        <div class="slds-p-around_medium">
+                                                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Typical <lightning-badge label="High" class="slds-m-left_x-small strategy-badge--high"></lightning-badge></h3>
+                                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">Balanced precision and recall</p>
+                                            <p class="slds-text-body_small strategy-use-case">Ideal for retail or B2C brands that want clean customer profiles without over-merging distinct individuals.</p>
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class={looseCardClass} data-strategy="loose" onclick={handleStrategySelect}>
+                                        <template lwc:if={isLooseSelected}><div class="visual-picker-checkmark"><lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon></div></template>
+                                        <div class="slds-p-around_medium">
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Loose</h3>
+                                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">High recall, more matches</p>
+                                            <p class="slds-text-body_small strategy-use-case">Good for media, entertainment, or loyalty programs where maximizing profile consolidation matters more than strict accuracy.</p>
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <div class="slds-m-top_large">
+                                <template lwc:if={isConservativeSelected}>
+                                    <div class="match-rules-list">
+                                        <div class="match-rules-list__header"><span>Recommended Match Rules (3)</span><lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Exact Name + Email + Phone</p><p class="match-rule-row__desc">Requires an exact match on the customer's full name, email address, and phone number across all sources.</p></div></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Exact Name + Address + Phone</p><p class="match-rule-row__desc">Matches profiles where the full name, mailing address, and phone number are all identical.</p></div></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Exact SSN</p><p class="match-rule-row__desc">Pairs a fuzzy name comparison with an exact Social Security Number match.</p></div></div>
+                                    </div>
+                                </template>
+                                <template lwc:if={isTypicalSelected}>
+                                    <div class="match-rules-list">
+                                        <div class="match-rules-list__header"><span>Recommended Match Rules (3)</span><lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Email + Phone</p><p class="match-rule-row__desc">Allows slight name variations while still requiring both email and phone to match.</p></div></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Email + Phone Match</p><p class="match-rule-row__desc">Merges any two records that share the same email address and phone number.</p></div></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Exact DOB</p><p class="match-rule-row__desc">Combines a fuzzy name check with an exact date-of-birth match.</p></div></div>
+                                    </div>
+                                </template>
+                                <template lwc:if={isLooseSelected}>
+                                    <div class="match-rules-list">
+                                        <div class="match-rules-list__header"><span>Recommended Match Rules (3)</span><lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Email</p><p class="match-rule-row__desc">Merges profiles with a similar name and matching email address.</p></div></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Email Only Match</p><p class="match-rule-row__desc">Merges any two records that share the same email address.</p></div></div>
+                                        <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Phone Only Match</p><p class="match-rule-row__desc">Merges profiles on phone number alone.</p></div></div>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="slds-m-top_large slds-text-align_center">
+                                <lightning-button label="Create Custom Match Rules" variant="neutral" icon-name="utility:add" onclick={handleOpenCustomMatchRulesModal}></lightning-button>
+                                <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">Advanced: Define your own matching criteria</p>
+                            </div>
                         </div>
-
-                        <!-- Contact Point Mappings -->
-                        <lightning-layout multiple-rows>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-combobox
-                                    label="Contact Point Address"
-                                    placeholder="Select from Dropdown..."
-                                    options={dloOptions}
-                                    value={contactPointAddress}
-                                    onchange={handleContactPointAddressChange}>
-                                </lightning-combobox>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-combobox
-                                    label="Contact Point App"
-                                    placeholder="Select from Dropdown..."
-                                    options={dloOptions}
-                                    value={contactPointApp}
-                                    onchange={handleContactPointAppChange}>
-                                </lightning-combobox>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-combobox
-                                    label="Contact Point Email"
-                                    placeholder="Select from Dropdown..."
-                                    options={dloOptions}
-                                    value={contactPointEmail}
-                                    onchange={handleContactPointEmailChange}>
-                                </lightning-combobox>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-combobox
-                                    label="Contact Point Social"
-                                    placeholder="Select from Dropdown..."
-                                    options={dloOptions}
-                                    value={contactPointSocial}
-                                    onchange={handleContactPointSocialChange}>
-                                </lightning-combobox>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-combobox
-                                    label="Contact Point Phone"
-                                    placeholder="Select from Dropdown..."
-                                    options={dloOptions}
-                                    value={contactPointPhone}
-                                    onchange={handleContactPointPhoneChange}>
-                                </lightning-combobox>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">
-                                <lightning-combobox
-                                    label="Party ID"
-                                    placeholder="Select from Dropdown..."
-                                    options={dloOptions}
-                                    value={partyId}
-                                    onchange={handlePartyIdChange}>
-                                </lightning-combobox>
-                            </lightning-layout-item>
-                        </lightning-layout>
-                        </div>
+                        </template>
                     </template>
 
-                    <!-- Step 4: Generate Match Rules -->
+                    <!-- Step 3: Trusted Sources (V1) / Reconciliation Rules (V2) -->
+                    <template lwc:elseif={isStep3}>
+                        <!-- V1: Trusted Sources -->
+                        <template lwc:if={isScenario1}>
+                        <div class="step1-section">
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
+                            <h3 class="slds-text-heading_small">Trusted Sources</h3>
+                            <a href="#" class="step-skip-link slds-m-left_small" onclick={handleSkipStep}>skip this step (draft)</a>
+                        </div>
+                        <div class="step1-body-layout">
+                            <div class="step1-body-main">
+                                <!-- DLO Selection -->
+                                <div class="slds-m-bottom_medium">
+                                    <lightning-combobox
+                                        label="Individual"
+                                        placeholder="Select from Dropdown..."
+                                        options={dloOptions}
+                                        value={individualDlo}
+                                        required={step2Required}
+                                        onchange={handleIndividualDloChange}
+                                        class="slds-m-bottom_medium">
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Contact Point Mappings -->
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Contact Point Address"
+                                            placeholder="Select from Dropdown..."
+                                            options={dloOptions}
+                                            value={contactPointAddress}
+                                            onchange={handleContactPointAddressChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Contact Point App"
+                                            placeholder="Select from Dropdown..."
+                                            options={dloOptions}
+                                            value={contactPointApp}
+                                            onchange={handleContactPointAppChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Contact Point Email"
+                                            placeholder="Select from Dropdown..."
+                                            options={dloOptions}
+                                            value={contactPointEmail}
+                                            onchange={handleContactPointEmailChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Contact Point Social"
+                                            placeholder="Select from Dropdown..."
+                                            options={dloOptions}
+                                            value={contactPointSocial}
+                                            onchange={handleContactPointSocialChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Contact Point Phone"
+                                            placeholder="Select from Dropdown..."
+                                            options={dloOptions}
+                                            value={contactPointPhone}
+                                            onchange={handleContactPointPhoneChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Party ID"
+                                            placeholder="Select from Dropdown..."
+                                            options={dloOptions}
+                                            value={partyId}
+                                            onchange={handlePartyIdChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </div>
+                            <!-- Trusted Source info sidebar -->
+                            <div class="trusted-source-info-panel">
+                                <p class="trusted-source-info-panel__title">Trusted Source info*</p>
+                                <div class="trusted-source-info-panel__section">
+                                    <p class="trusted-source-info-panel__label">What this means</p>
+                                    <p class="trusted-source-info-panel__text">When multiple data sources have different values for the same field, Trusted Sources define which source takes priority in the unified profile.</p>
+                                </div>
+                                <div class="trusted-source-info-panel__section">
+                                    <p class="trusted-source-info-panel__label">How to set up</p>
+                                    <p class="trusted-source-info-panel__text">Select a data source for each DMO. The chosen source's field values will take precedence during reconciliation.</p>
+                                </div>
+                                <div class="trusted-source-info-panel__section">
+                                    <p class="trusted-source-info-panel__label">Best for</p>
+                                    <p class="trusted-source-info-panel__text">Organizations with a high-confidence primary data source, such as a CRM or MDM, whose data should always win during profile unification.</p>
+                                </div>
+                                <div class="trusted-source-info-panel__section">
+                                    <p class="trusted-source-info-panel__label">Note</p>
+                                    <p class="trusted-source-info-panel__text">If no Trusted Source is set, Identity Resolution falls back to the reconciliation method (Most Frequent or Most Recent).</p>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </template>
+
+                        <!-- V2: Reconciliation Rules (from V1 step 5) -->
+                        <template lwc:elseif={isScenario2}>
+                        <div class="config-card">
+                        <div class="config-card__section">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_large">
+                                <p class="slds-text-body_small slds-text-color_weak">
+                                    Reconciliation rules determine how identity resolution fills fields in the unified profile that can only hold one value. These rules only affect the profile summary — all original values remain available.
+                                </p>
+                            </div>
+                            <div class="recon-rules-list">
+                                <!-- DMO: Individual -->
+                                <div class="recon-dmo-row" data-dmo="individual" onclick={handleReconDmoToggle}>
+                                    <div class="recon-dmo-row__header">
+                                        <div class="recon-dmo-row__left">
+                                            <lightning-icon icon-name={individualChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                            <span class="recon-dmo-row__name">Individual</span>
+                                            <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">5 fields</span>
+                                            <div class="recon-dmo-row__meta">
+                                                <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent slds-m-left_x-small"></lightning-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template lwc:if={isIndividualExpanded}>
+                                        <div class="recon-dmo-row__fields">
+                                            <div class="recon-dmo-row__fields-actions">
+                                                <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                            </div>
+                                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><div class="slds-truncate">First Name</div></td><td><div class="slds-truncate">FirstName</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Last Name</div></td><td><div class="slds-truncate">LastName</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Birth Date</div></td><td><div class="slds-truncate">BirthDate</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Email Address</div></td><td><div class="slds-truncate">EmailAddress</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Phone Number</div></td><td><div class="slds-truncate">PhoneNumber</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template>
+                                </div>
+                                <!-- DMO: Contact Point Email -->
+                                <div class="recon-dmo-row" data-dmo="cpEmail" onclick={handleReconDmoToggle}>
+                                    <div class="recon-dmo-row__header">
+                                        <div class="recon-dmo-row__left">
+                                            <lightning-icon icon-name={cpEmailChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                            <span class="recon-dmo-row__name">Contact Point Email</span>
+                                            <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
+                                            <div class="recon-dmo-row__meta">
+                                                <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template lwc:if={isCpEmailExpanded}>
+                                        <div class="recon-dmo-row__fields">
+                                            <div class="recon-dmo-row__fields-actions">
+                                                <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                            </div>
+                                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><div class="slds-truncate">Is Primary</div></td><td><div class="slds-truncate">IsPrimary</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Email Address</div></td><td><div class="slds-truncate">EmailAddress</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Email Domain</div></td><td><div class="slds-truncate">EmailDomain</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template>
+                                </div>
+                                <!-- DMO: Contact Point Phone -->
+                                <div class="recon-dmo-row" data-dmo="cpPhone" onclick={handleReconDmoToggle}>
+                                    <div class="recon-dmo-row__header">
+                                        <div class="recon-dmo-row__left">
+                                            <lightning-icon icon-name={cpPhoneChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                            <span class="recon-dmo-row__name">Contact Point Phone</span>
+                                            <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
+                                            <div class="recon-dmo-row__meta">
+                                                <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template lwc:if={isCpPhoneExpanded}>
+                                        <div class="recon-dmo-row__fields">
+                                            <div class="recon-dmo-row__fields-actions">
+                                                <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                            </div>
+                                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><div class="slds-truncate">Phone Type</div></td><td><div class="slds-truncate">PhoneType</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Phone Number</div></td><td><div class="slds-truncate">TelephoneNumber</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Country Code</div></td><td><div class="slds-truncate">CountryDialingCode</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template>
+                                </div>
+                                <!-- DMO: Contact Point Address -->
+                                <div class="recon-dmo-row" data-dmo="cpAddress" onclick={handleReconDmoToggle}>
+                                    <div class="recon-dmo-row__header">
+                                        <div class="recon-dmo-row__left">
+                                            <lightning-icon icon-name={cpAddressChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
+                                            <span class="recon-dmo-row__name">Contact Point Address</span>
+                                            <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">4 fields</span>
+                                            <div class="recon-dmo-row__meta">
+                                                <span class="slds-text-body_small slds-text-color_weak">Default:</span>
+                                                <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template lwc:if={isCpAddressExpanded}>
+                                        <div class="recon-dmo-row__fields">
+                                            <div class="recon-dmo-row__fields-actions">
+                                                <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
+                                                <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
+                                            </div>
+                                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
+                                                <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><div class="slds-truncate">Street</div></td><td><div class="slds-truncate">Street</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">City</div></td><td><div class="slds-truncate">City</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">State</div></td><td><div class="slds-truncate">State</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                    <tr><td><div class="slds-truncate">Postal Code</div></td><td><div class="slds-truncate">PostalCode</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="config-card__divider" />
+                        <div class="config-card__footer">
+                            <lightning-button label="Back" variant="neutral" onclick={handleBack}></lightning-button>
+                            <span class="wizard-panel__footer-progress">{wizardStepProgressText}</span>
+                            <div class="config-card__footer-right">
+                                <lightning-button label="Next" variant="brand" onclick={handleNext}></lightning-button>
+                                <lightning-button label="Create Ruleset" variant="brand" onclick={handleSave}></lightning-button>
+                            </div>
+                        </div>
+                        </div>
+                        </template>
+                    </template>
+
+                    <!-- Step 4: Match Rules in lightning-card (V1) / Filters (V2) -->
                     <template lwc:elseif={isStep4}>
+                        <!-- V1: Match Rules with lightning-card -->
+                        <template lwc:if={isScenario1}>
                         <!-- Recommendation Notification -->
                         <template lwc:if={showRecommendationBanners}>
                         <div class="slds-scoped-notification slds-media slds-media_center slds-theme_info slds-m-bottom_medium" role="status">
@@ -940,7 +1492,7 @@
                                                 </div>
                                             </template>
                                             <div class="slds-p-around_medium">
-                                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">Typical</h3>
+                                                                                <h3 class="slds-text-heading_small slds-m-bottom_x-small">Typical <lightning-badge label="High" class="slds-m-left_x-small strategy-badge--high"></lightning-badge></h3>
                                                 <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">Balanced precision and recall</p>
                                                 <p class="slds-text-body_small strategy-use-case">Ideal for retail or B2C brands that want clean customer profiles without over-merging distinct individuals.</p>
                                             </div>
@@ -963,24 +1515,6 @@
                                         </div>
                                     </lightning-layout-item>
 
-                                    <!-- Skip Recommendation -->
-                                    <lightning-layout-item size="3" padding="around-small">
-                                        <div class={skipRecommendationCardClass} data-strategy="skip" onclick={handleStrategySelect}>
-                                            <template lwc:if={isSkipSelected}>
-                                                <div class="visual-picker-checkmark">
-                                                    <lightning-icon icon-name="utility:check" size="small" variant="inverse"></lightning-icon>
-                                                </div>
-                                            </template>
-                                            <div class="slds-p-around_medium">
-                                                <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
-                                                    <lightning-icon icon-name="utility:skip" size="x-small" class="slds-m-right_x-small skip-rec-icon"></lightning-icon>
-                                                    <h3 class="slds-text-heading_small">Skip Recommendation</h3>
-                                                </div>
-                                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">I'll configure match rules manually</p>
-                                                <p class="slds-text-body_small strategy-use-case">Choose this if you have specific matching requirements or want full control over your rule configuration.</p>
-                                            </div>
-                                        </div>
-                                    </lightning-layout-item>
                                 </lightning-layout>
 
                                 <!-- Match Rules Display - Shows Below Cards -->
@@ -992,27 +1526,9 @@
                                                 <span>Recommended Match Rules (3)</span>
                                                 <lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input>
                                             </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-spacer"></div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Exact Name + Email + Phone</p>
-                                                    <p class="match-rule-row__desc">Requires an exact match on the customer's full name, email address, and phone number across all sources. Virtually eliminates false positives — two records must be identical on all three fields to merge.</p>
-                                                </div>
-                                            </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-badge">or</div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Exact Name + Address + Phone</p>
-                                                    <p class="match-rule-row__desc">Matches profiles where the full name, mailing address, and phone number are all identical. Catches customers who use different email addresses but share the same household and phone.</p>
-                                                </div>
-                                            </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-badge">or</div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Fuzzy Name + Exact SSN</p>
-                                                    <p class="match-rule-row__desc">Pairs a fuzzy name comparison with an exact Social Security Number match. Handles name typos or legal vs. preferred name differences while anchoring the merge to a government-issued identifier.</p>
-                                                </div>
-                                            </div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Exact Name + Email + Phone</p><p class="match-rule-row__desc">Requires an exact match on the customer's full name, email address, and phone number across all sources. Virtually eliminates false positives — two records must be identical on all three fields to merge.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Exact Name + Address + Phone</p><p class="match-rule-row__desc">Matches profiles where the full name, mailing address, and phone number are all identical. Catches customers who use different email addresses but share the same household and phone.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Exact SSN</p><p class="match-rule-row__desc">Pairs a fuzzy name comparison with an exact Social Security Number match. Handles name typos or legal vs. preferred name differences while anchoring the merge to a government-issued identifier.</p></div></div>
                                         </div>
                                     </template>
 
@@ -1023,27 +1539,9 @@
                                                 <span>Recommended Match Rules (3)</span>
                                                 <lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input>
                                             </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-spacer"></div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Fuzzy Name + Email + Phone</p>
-                                                    <p class="match-rule-row__desc">Allows slight name variations (e.g. "Bob" vs "Robert", "Sara" vs "Sarah") while still requiring both email and phone to match. Catches common nickname and spelling differences without introducing risky merges.</p>
-                                                </div>
-                                            </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-badge">or</div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Email + Phone Match</p>
-                                                    <p class="match-rule-row__desc">Merges any two records that share the same email address and phone number, regardless of how the name is stored. Works well when customers use multiple name formats across different systems.</p>
-                                                </div>
-                                            </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-badge">or</div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Fuzzy Name + Exact DOB</p>
-                                                    <p class="match-rule-row__desc">Combines a fuzzy name check with an exact date-of-birth match. Especially effective for consumer businesses where DOB is reliably collected and names vary by system.</p>
-                                                </div>
-                                            </div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Email + Phone</p><p class="match-rule-row__desc">Allows slight name variations (e.g. "Bob" vs "Robert", "Sara" vs "Sarah") while still requiring both email and phone to match. Catches common nickname and spelling differences without introducing risky merges.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Email + Phone Match</p><p class="match-rule-row__desc">Merges any two records that share the same email address and phone number, regardless of how the name is stored. Works well when customers use multiple name formats across different systems.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Exact DOB</p><p class="match-rule-row__desc">Combines a fuzzy name check with an exact date-of-birth match. Especially effective for consumer businesses where DOB is reliably collected and names vary by system.</p></div></div>
                                         </div>
                                     </template>
 
@@ -1054,27 +1552,9 @@
                                                 <span>Recommended Match Rules (3)</span>
                                                 <lightning-input type="checkbox" label="Case sensitive" checked={caseSensitive} onchange={handleCaseSensitiveChange} class="match-rules-case-sensitive"></lightning-input>
                                             </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-spacer"></div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Fuzzy Name + Email</p>
-                                                    <p class="match-rule-row__desc">Merges profiles with a similar name and matching email address. Casts a wide net across your data — ideal when customers frequently use name abbreviations or when phone data is sparse.</p>
-                                                </div>
-                                            </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-badge">or</div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Email Only Match</p>
-                                                    <p class="match-rule-row__desc">Merges any two records that share the same email address, regardless of name or other fields. Maximizes consolidation for datasets where email is the single most reliable identifier.</p>
-                                                </div>
-                                            </div>
-                                            <div class="match-rule-row">
-                                                <div class="match-rule-row__or-badge">or</div>
-                                                <div class="match-rule-row__content">
-                                                    <p class="match-rule-row__title">Phone Only Match</p>
-                                                    <p class="match-rule-row__desc">Merges profiles on phone number alone. Best used when phone is a primary loyalty or account identifier, such as in telecom, QSR loyalty, or subscription services.</p>
-                                                </div>
-                                            </div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-spacer"></div><div class="match-rule-row__content"><p class="match-rule-row__title">Fuzzy Name + Email</p><p class="match-rule-row__desc">Merges profiles with a similar name and matching email address. Casts a wide net across your data — ideal when customers frequently use name abbreviations or when phone data is sparse.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Email Only Match</p><p class="match-rule-row__desc">Merges any two records that share the same email address, regardless of name or other fields. Maximizes consolidation for datasets where email is the single most reliable identifier.</p></div></div>
+                                            <div class="match-rule-row"><div class="match-rule-row__or-badge">or</div><div class="match-rule-row__content"><p class="match-rule-row__title">Phone Only Match</p><p class="match-rule-row__desc">Merges profiles on phone number alone. Best used when phone is a primary loyalty or account identifier, such as in telecom, QSR loyalty, or subscription services.</p></div></div>
                                         </div>
                                     </template>
                                 </div>
@@ -1084,78 +1564,91 @@
                                     <lightning-button
                                         label="Create Custom Match Rules"
                                         variant="neutral"
-                                        icon-name="utility:add">
+                                        icon-name="utility:add"
+                                        onclick={handleOpenCustomMatchRulesModal}>
                                     </lightning-button>
                                     <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">Advanced: Define your own matching criteria</p>
                                 </div>
                             </div>
                         </lightning-card>
+                        </template>
 
-
+                        <!-- V2: Filters -->
+                        <template lwc:elseif={isScenario2}>
+                        <div class="config-card">
+                        <div class="config-card__section">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
+                                <h3 class="slds-text-heading_small">Filters</h3>
+                                <a href="#" class="step-skip-link slds-m-left_small" onclick={handleSkipStep}>skip this step (draft)</a>
+                            </div>
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start slds-m-bottom_medium">
+                                <div>
+                                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Source Profile Filter</h3>
+                                    <p class="slds-text-body_small slds-text-color_weak">Profiles are only processed by this ruleset when they meet the following conditions. <a href="#" onclick={handlePreventDefault}>Learn More</a></p>
+                                </div>
+                                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                            </div>
+                            <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                                <lightning-button label="+ Filter Group" variant="neutral" class="filter-group-btn"></lightning-button>
+                            </div>
+                            <div class="filter-group-box">
+                                <div class="filter-row slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                    <div class="slds-col filter-row__dmo"><lightning-combobox label="Data Model Object" placeholder="Select..." options={filterDmoOptions} variant="label-inline" class="filter-row__combobox"></lightning-combobox></div>
+                                    <div class="slds-col filter-row__field"><lightning-combobox label="Field" placeholder="Select..." options={filterFieldOptions} variant="label-inline" class="filter-row__combobox"></lightning-combobox></div>
+                                    <div class="slds-col filter-row__operator"><lightning-combobox label="Operator" placeholder="Select..." options={filterOperatorOptions} variant="label-inline" class="filter-row__combobox"></lightning-combobox></div>
+                                    <div class="slds-col filter-row__value"><lightning-input label="Value" placeholder="Enter a Value..." variant="label-hidden"></lightning-input></div>
+                                    <div class="filter-row__actions slds-grid slds-grid_vertical-align-center slds-gutters_xx-small">
+                                        <lightning-button-icon icon-name="utility:add" variant="border-filled" size="small" alternative-text="Add filter row"></lightning-button-icon>
+                                        <lightning-button-icon icon-name="utility:delete" variant="border-filled" size="small" alternative-text="Remove filter row"></lightning-button-icon>
+                                    </div>
+                                </div>
+                                <div class="filter-refinements slds-grid slds-grid_vertical-align-center slds-m-top_small">
+                                    <span class="slds-text-body_small slds-text-color_default slds-m-right_small"><strong>Refinements</strong></span>
+                                    <lightning-input type="checkbox" label="Case Sensitive" class="slds-m-right_small"></lightning-input>
+                                    <lightning-input type="checkbox" label="Trim Spaces"></lightning-input>
+                                    <span class="slds-m-left_xx-small"><lightning-icon icon-name="utility:info" size="xx-small" class="slds-text-color_weak"></lightning-icon></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="config-card__divider" />
+                        <div class="config-card__footer">
+                            <lightning-button label="Back" variant="neutral" onclick={handleBack}></lightning-button>
+                            <span class="wizard-panel__footer-progress">{wizardStepProgressText}</span>
+                            <div class="config-card__footer-right">
+                                <lightning-button label="Next" variant="brand" onclick={handleNext}></lightning-button>
+                                <lightning-button label="Create Ruleset" variant="brand" onclick={handleSave}></lightning-button>
+                            </div>
+                        </div>
+                        </div>
+                        </template>
                     </template>
 
-                    <!-- Step 5: Generate Reconciliation Rules -->
+                    <!-- Step 5: Reconciliation Rules (V1) / Job Run Schedule (V2) -->
                     <template lwc:elseif={isStep5}>
-                        <lightning-card title="Reconciliation Rules">
-                            <div class="slds-p-around_medium">
-                                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_large">
+                        <!-- V1: Reconciliation Rules -->
+                        <template lwc:if={isScenario1}>
+                        <div class="config-card">
+                        <div class="config-card__section">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_large">
+                                <p class="slds-text-body_small slds-text-color_weak">
                                     Reconciliation rules determine how identity resolution fills fields in the unified profile that can only hold one value. These rules only affect the profile summary — all original values remain available.
                                 </p>
-
+                            </div>
                                 <div class="recon-rules-list">
                                     <!-- DMO: Individual -->
                                     <div class="recon-dmo-row" data-dmo="individual" onclick={handleReconDmoToggle}>
-                                        <div class="recon-dmo-row__header">
-                                            <div class="recon-dmo-row__left">
-                                                <lightning-icon icon-name={individualChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                                <span class="recon-dmo-row__name">Individual</span>
-                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">5 fields</span>
-                                                <div class="recon-dmo-row__meta">
-                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                                    <lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent slds-m-left_x-small"></lightning-badge>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="recon-dmo-row__header"><div class="recon-dmo-row__left"><lightning-icon icon-name={individualChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon><span class="recon-dmo-row__name">Individual</span><span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">5 fields</span><div class="recon-dmo-row__meta"><span class="slds-text-body_small slds-text-color_weak">Default:</span><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent slds-m-left_x-small"></lightning-badge></div></div></div>
                                         <template lwc:if={isIndividualExpanded}>
                                             <div class="recon-dmo-row__fields">
-                                                <div class="recon-dmo-row__fields-actions">
-                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
-                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
-                                                </div>
+                                                <div class="recon-dmo-row__fields-actions"><lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button><lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button></div>
                                                 <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
-                                                    <thead>
-                                                        <tr class="slds-line-height_reset">
-                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
-                                                        </tr>
-                                                    </thead>
+                                                    <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">First Name</div></td>
-                                                            <td><div class="slds-truncate">FirstName</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Last Name</div></td>
-                                                            <td><div class="slds-truncate">LastName</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Birth Date</div></td>
-                                                            <td><div class="slds-truncate">BirthDate</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Email Address</div></td>
-                                                            <td><div class="slds-truncate">EmailAddress</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Phone Number</div></td>
-                                                            <td><div class="slds-truncate">PhoneNumber</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
+                                                        <tr><td><div class="slds-truncate">First Name</div></td><td><div class="slds-truncate">FirstName</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Last Name</div></td><td><div class="slds-truncate">LastName</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Birth Date</div></td><td><div class="slds-truncate">BirthDate</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Email Address</div></td><td><div class="slds-truncate">EmailAddress</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Phone Number</div></td><td><div class="slds-truncate">PhoneNumber</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1163,47 +1656,16 @@
                                     </div>
                                     <!-- DMO: Contact Point Email -->
                                     <div class="recon-dmo-row" data-dmo="cpEmail" onclick={handleReconDmoToggle}>
-                                        <div class="recon-dmo-row__header">
-                                            <div class="recon-dmo-row__left">
-                                                <lightning-icon icon-name={cpEmailChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                                <span class="recon-dmo-row__name">Contact Point Email</span>
-                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
-                                                <div class="recon-dmo-row__meta">
-                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                                    <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="recon-dmo-row__header"><div class="recon-dmo-row__left"><lightning-icon icon-name={cpEmailChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon><span class="recon-dmo-row__name">Contact Point Email</span><span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span><div class="recon-dmo-row__meta"><span class="slds-text-body_small slds-text-color_weak">Default:</span><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge></div></div></div>
                                         <template lwc:if={isCpEmailExpanded}>
                                             <div class="recon-dmo-row__fields">
-                                                <div class="recon-dmo-row__fields-actions">
-                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
-                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
-                                                </div>
+                                                <div class="recon-dmo-row__fields-actions"><lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button><lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button></div>
                                                 <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
-                                                    <thead>
-                                                        <tr class="slds-line-height_reset">
-                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
-                                                        </tr>
-                                                    </thead>
+                                                    <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Is Primary</div></td>
-                                                            <td><div class="slds-truncate">IsPrimary</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Email Address</div></td>
-                                                            <td><div class="slds-truncate">EmailAddress</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Email Domain</div></td>
-                                                            <td><div class="slds-truncate">EmailDomain</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
+                                                        <tr><td><div class="slds-truncate">Is Primary</div></td><td><div class="slds-truncate">IsPrimary</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Email Address</div></td><td><div class="slds-truncate">EmailAddress</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Email Domain</div></td><td><div class="slds-truncate">EmailDomain</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1211,47 +1673,16 @@
                                     </div>
                                     <!-- DMO: Contact Point Phone -->
                                     <div class="recon-dmo-row" data-dmo="cpPhone" onclick={handleReconDmoToggle}>
-                                        <div class="recon-dmo-row__header">
-                                            <div class="recon-dmo-row__left">
-                                                <lightning-icon icon-name={cpPhoneChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                                <span class="recon-dmo-row__name">Contact Point Phone</span>
-                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span>
-                                                <div class="recon-dmo-row__meta">
-                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                                    <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="recon-dmo-row__header"><div class="recon-dmo-row__left"><lightning-icon icon-name={cpPhoneChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon><span class="recon-dmo-row__name">Contact Point Phone</span><span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">3 fields</span><div class="recon-dmo-row__meta"><span class="slds-text-body_small slds-text-color_weak">Default:</span><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge></div></div></div>
                                         <template lwc:if={isCpPhoneExpanded}>
                                             <div class="recon-dmo-row__fields">
-                                                <div class="recon-dmo-row__fields-actions">
-                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
-                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
-                                                </div>
+                                                <div class="recon-dmo-row__fields-actions"><lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button><lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button></div>
                                                 <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
-                                                    <thead>
-                                                        <tr class="slds-line-height_reset">
-                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
-                                                        </tr>
-                                                    </thead>
+                                                    <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Phone Type</div></td>
-                                                            <td><div class="slds-truncate">PhoneType</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Phone Number</div></td>
-                                                            <td><div class="slds-truncate">TelephoneNumber</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Country Code</div></td>
-                                                            <td><div class="slds-truncate">CountryDialingCode</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
+                                                        <tr><td><div class="slds-truncate">Phone Type</div></td><td><div class="slds-truncate">PhoneType</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Phone Number</div></td><td><div class="slds-truncate">TelephoneNumber</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Country Code</div></td><td><div class="slds-truncate">CountryDialingCode</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1259,67 +1690,180 @@
                                     </div>
                                     <!-- DMO: Contact Point Address -->
                                     <div class="recon-dmo-row" data-dmo="cpAddress" onclick={handleReconDmoToggle}>
-                                        <div class="recon-dmo-row__header">
-                                            <div class="recon-dmo-row__left">
-                                                <lightning-icon icon-name={cpAddressChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon>
-                                                <span class="recon-dmo-row__name">Contact Point Address</span>
-                                                <span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">4 fields</span>
-                                                <div class="recon-dmo-row__meta">
-                                                    <span class="slds-text-body_small slds-text-color_weak">Default:</span>
-                                                    <lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="recon-dmo-row__header"><div class="recon-dmo-row__left"><lightning-icon icon-name={cpAddressChevron} size="x-small" class="recon-dmo-row__chevron"></lightning-icon><span class="recon-dmo-row__name">Contact Point Address</span><span class="recon-dmo-row__field-count slds-text-body_small slds-text-color_weak">4 fields</span><div class="recon-dmo-row__meta"><span class="slds-text-body_small slds-text-color_weak">Default:</span><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent slds-m-left_x-small"></lightning-badge></div></div></div>
                                         <template lwc:if={isCpAddressExpanded}>
                                             <div class="recon-dmo-row__fields">
-                                                <div class="recon-dmo-row__fields-actions">
-                                                    <lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button>
-                                                    <lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button>
-                                                </div>
+                                                <div class="recon-dmo-row__fields-actions"><lightning-button label="Edit" variant="neutral" icon-name="utility:edit" icon-position="left" size="small"></lightning-button><lightning-button label="Reset to Default" variant="neutral" icon-name="utility:undo" icon-position="left" size="small"></lightning-button></div>
                                                 <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout recon-fields-table">
-                                                    <thead>
-                                                        <tr class="slds-line-height_reset">
-                                                            <th scope="col"><div class="slds-truncate">Field Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Field API Name</div></th>
-                                                            <th scope="col"><div class="slds-truncate">Reconciliation Method</div></th>
-                                                        </tr>
-                                                    </thead>
+                                                    <thead><tr class="slds-line-height_reset"><th scope="col"><div class="slds-truncate">Field Name</div></th><th scope="col"><div class="slds-truncate">Field API Name</div></th><th scope="col"><div class="slds-truncate">Reconciliation Method</div></th></tr></thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Street</div></td>
-                                                            <td><div class="slds-truncate">Street</div></td>
-                                                            <td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">City</div></td>
-                                                            <td><div class="slds-truncate">City</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">State</div></td>
-                                                            <td><div class="slds-truncate">State</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div class="slds-truncate">Postal Code</div></td>
-                                                            <td><div class="slds-truncate">PostalCode</div></td>
-                                                            <td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td>
-                                                        </tr>
+                                                        <tr><td><div class="slds-truncate">Street</div></td><td><div class="slds-truncate">Street</div></td><td><lightning-badge label="Most Frequent" class="recon-badge recon-badge_frequent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">City</div></td><td><div class="slds-truncate">City</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">State</div></td><td><div class="slds-truncate">State</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
+                                                        <tr><td><div class="slds-truncate">Postal Code</div></td><td><div class="slds-truncate">PostalCode</div></td><td><lightning-badge label="Most Recent" class="recon-badge recon-badge_recent"></lightning-badge></td></tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </template>
                                     </div>
                                 </div>
+                        </div>
+                        </div>
+                        <hr class="config-card__divider" />
+                        <div class="config-card__footer">
+                            <lightning-button label="Back" variant="neutral" onclick={handleBack}></lightning-button>
+                            <span class="wizard-panel__footer-progress">{wizardStepProgressText}</span>
+                            <div class="config-card__footer-right">
+                                <lightning-button label="Next" variant="brand" onclick={handleNext}></lightning-button>
+                                <lightning-button label="Create Ruleset" variant="brand" onclick={handleSave}></lightning-button>
                             </div>
-                        </lightning-card>
+                        </div>
+                        </div>
+                        </template>
+
+                        <!-- V2: Job Run Schedule (Automatic/Manual picker + automatic settings) -->
+                        <template lwc:elseif={isScenario2}>
+                        <div class="step1-section">
+                            <div class="slds-m-bottom_large">
+                                <h2 class="slds-text-heading_small slds-m-bottom_x-small">Job Run Mode</h2>
+                                <p class="slds-text-body_regular slds-text-color_weak slds-m-bottom_medium">
+                                    Each job run consumes Data Cloud credits, regardless of run mode. Choose how your ruleset jobs are triggered to manage your credit usage and optimize performance.
+                                </p>
+                                <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class={automaticCardClass} onclick={handleSelectAutomatic} style="cursor:pointer;position:relative;">
+                                            <template lwc:if={isAutomaticMode}>
+                                                <span class="visual-picker-checkmark">
+                                                    <lightning-icon icon-name="utility:check" size="x-small" style="--slds-c-icon-color-foreground-default:#ffffff;"></lightning-icon>
+                                                </span>
+                                            </template>
+                                            <div class="slds-media">
+                                                <div class="slds-media__body">
+                                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
+                                                        <h3 class="slds-text-title_caps slds-text-color_default">Automatic</h3>
+                                                        <ui-badge-with-tooltip class="slds-m-left_x-small" heading="Why AI selected Automatic" body="Your org's data volume and change frequency makes continuous automatic resolution the optimal choice — it keeps unified profiles fresh within hours of source record updates, supporting real-time segmentation and activation use cases."></ui-badge-with-tooltip>
+                                                    </div>
+                                                    <p class="slds-text-body_small slds-text-color_weak">Salesforce automatically schedules and runs identity resolution jobs on a set cadence. Jobs start as soon as your ruleset is activated and run continuously on your chosen schedule.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class={manualCardClass} onclick={handleSelectManual} style="cursor:pointer;position:relative;">
+                                            <template lwc:if={isManualMode}>
+                                                <span class="visual-picker-checkmark">
+                                                    <lightning-icon icon-name="utility:check" size="x-small" style="--slds-c-icon-color-foreground-default:#ffffff;"></lightning-icon>
+                                                </span>
+                                            </template>
+                                            <div class="slds-media">
+                                                <div class="slds-media__body">
+                                                    <h3 class="slds-text-title_caps slds-text-color_default slds-m-bottom_x-small">Manual</h3>
+                                                    <p class="slds-text-body_small slds-text-color_weak">You control when jobs run. Trigger identity resolution manually from the record home or via API. Useful when you want to batch runs or run only when data changes significantly.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template lwc:if={isAutomaticMode}>
+                                    <div class="step1-section slds-m-top_medium">
+                                        <h3 class="step1-section__title slds-m-bottom_small">Automatic Run Settings</h3>
+                                        <lightning-combobox
+                                            label="Run Frequency"
+                                            placeholder="Select frequency..."
+                                            options={jobScheduleFrequencyOptions}
+                                            value={jobFrequency}
+                                            onchange={handleJobFrequencyChange}
+                                            class="slds-m-bottom_medium">
+                                        </lightning-combobox>
+                                        <div class="slds-box slds-box_x-small slds-m-bottom_medium" style="background:#fff8ed;border-color:#f5ca6b;">
+                                            <div class="slds-media slds-media_center">
+                                                <div class="slds-media__figure slds-m-right_small">
+                                                    <lightning-icon icon-name="utility:info" size="x-small" style="--slds-c-icon-color-foreground-default:#a86403;"></lightning-icon>
+                                                </div>
+                                                <div class="slds-media__body">
+                                                    <p class="slds-text-body_small slds-text-color_default slds-m-bottom_x-small"><strong>Pause automatic runs during configuration</strong></p>
+                                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">Pausing lets you finish all configuration steps — match rules, reconciliation rules, and filters — before any jobs run and consume credits. Once you're ready, return to this screen and unpause to resume the automatic schedule.</p>
+                                                    <lightning-input type="checkbox" label="Pause automatic runs while I finish configuration" checked={pauseAutomaticRuns} onchange={handlePauseAutoToggle}></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                    </template>
+
+                    <!-- Step 6: Filters (V1 only) -->
+                    <template lwc:elseif={isStep6}>
+                        <template lwc:if={isScenario1}>
+                        <div class="config-card">
+                        <div class="config-card__section">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
+                                <h3 class="slds-text-heading_small">Filters</h3>
+                                <a href="#" class="step-skip-link slds-m-left_small" onclick={handleSkipStep}>skip this step (draft)</a>
+                            </div>
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start slds-m-bottom_medium">
+                                <div>
+                                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Source Profile Filter</h3>
+                                    <p class="slds-text-body_small slds-text-color_weak">Profiles are only processed by this ruleset when they meet the following conditions. <a href="#" onclick={handlePreventDefault}>Learn More</a></p>
+                                </div>
+                                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                            </div>
+                            <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                                <lightning-button label="+ Filter Group" variant="neutral" class="filter-group-btn"></lightning-button>
+                            </div>
+                            <!-- Filter Group -->
+                            <div class="filter-group-box">
+                                <div class="filter-row slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                    <div class="slds-col filter-row__dmo">
+                                        <lightning-combobox label="Data Model Object" placeholder="Select..." options={filterDmoOptions} variant="label-inline" class="filter-row__combobox"></lightning-combobox>
+                                    </div>
+                                    <div class="slds-col filter-row__field">
+                                        <lightning-combobox label="Field" placeholder="Select..." options={filterFieldOptions} variant="label-inline" class="filter-row__combobox"></lightning-combobox>
+                                    </div>
+                                    <div class="slds-col filter-row__operator">
+                                        <lightning-combobox label="Operator" placeholder="Select..." options={filterOperatorOptions} variant="label-inline" class="filter-row__combobox"></lightning-combobox>
+                                    </div>
+                                    <div class="slds-col filter-row__value">
+                                        <lightning-input label="Value" placeholder="Enter a Value..." variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="filter-row__actions slds-grid slds-grid_vertical-align-center slds-gutters_xx-small">
+                                        <lightning-button-icon icon-name="utility:add" variant="border-filled" size="small" alternative-text="Add filter row"></lightning-button-icon>
+                                        <lightning-button-icon icon-name="utility:delete" variant="border-filled" size="small" alternative-text="Remove filter row"></lightning-button-icon>
+                                    </div>
+                                </div>
+                                <div class="filter-refinements slds-grid slds-grid_vertical-align-center slds-m-top_small">
+                                    <span class="slds-text-body_small slds-text-color_default slds-m-right_small"><strong>Refinements</strong></span>
+                                    <lightning-input type="checkbox" label="Case Sensitive" class="slds-m-right_small"></lightning-input>
+                                    <lightning-input type="checkbox" label="Trim Spaces"></lightning-input>
+                                    <span class="slds-m-left_xx-small">
+                                        <lightning-icon icon-name="utility:info" size="xx-small" class="slds-text-color_weak"></lightning-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="config-card__divider" />
+                        <div class="config-card__footer">
+                            <lightning-button label="Back" variant="neutral" onclick={handleBack}></lightning-button>
+                            <span class="wizard-panel__footer-progress">{wizardStepProgressText}</span>
+                            <div class="config-card__footer-right">
+                                <lightning-button label="Next" variant="brand" onclick={handleNext}></lightning-button>
+                                <lightning-button label="Create Ruleset" variant="brand" onclick={handleSave}></lightning-button>
+                            </div>
+                        </div>
+                        </div>
+                        </template>
                     </template>
 
                 </div>
 
             </div>
-            </div>
-        </div>
+            </div><!-- end canvas-detail-panel__content -->
+                    </div><!-- end canvas-content-card -->
+                    </div><!-- end canvas-detail-panel -->
+                </div><!-- end wizard-canvas-body -->
+        </div><!-- end wizard-canvas-layout -->
 
         <!-- Chat Panel (Docked Composer) -->
         <div class="slds-col slds-size_3-of-12 slds-p-left_small" lwc:if={showChatPanel}>
@@ -1346,8 +1890,8 @@
                 <div class="slds-docked-composer__body slds-col slds-grid slds-grid_vertical slds-nowrap" style="overflow-y: auto;">
                     <div class="slds-p-around_medium">
                         <div class="slds-chat">
-                            <ul class="slds-chat-list">
-                                <li class="slds-chat-listitem slds-chat-listitem_inbound">
+                            <div class="slds-chat-list">
+                                <div class="slds-chat-listitem slds-chat-listitem_inbound">
                                     <div class="slds-chat-message">
                                         <div class="slds-chat-message__body">
                                             <div class="slds-chat-message__text slds-chat-message__text_inbound">
@@ -1355,8 +1899,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1389,40 +1933,38 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="slds-page-header__col-actions slds-col_bump-left">
-                                <lightning-button label="Edit" variant="neutral" onclick={handleEditRecord}></lightning-button>
-                            </div>
+                            <div class="slds-page-header__col-actions slds-col_bump-left"></div>
                         </div>
                         <div class="slds-page-header__row slds-page-header__row_gutters">
                             <div class="slds-page-header__col-details">
-                                <ul class="slds-page-header__detail-row">
-                                    <li class="slds-page-header__detail-block">
+                                <div class="slds-page-header__detail-row">
+                                    <div class="slds-page-header__detail-block">
                                         <div class="slds-text-body_small slds-text-color_weak slds-truncate">Data Space</div>
                                         <div class="slds-text-body_regular slds-truncate">default</div>
-                                    </li>
-                                    <li class="slds-page-header__detail-block">
+                                    </div>
+                                    <div class="slds-page-header__detail-block">
                                         <div class="slds-text-body_small slds-text-color_weak slds-truncate">Ruleset Record</div>
                                         <div class="slds-text-body_regular slds-truncate">Individual IR — Production</div>
-                                    </li>
-                                    <li class="slds-page-header__detail-block">
+                                    </div>
+                                    <div class="slds-page-header__detail-block">
                                         <div class="slds-text-body_small slds-text-color_weak slds-truncate">Lorem Ipsum</div>
                                         <div class="slds-text-body_regular slds-truncate">Lorem ipsum</div>
-                                    </li>
-                                    <li class="slds-page-header__detail-block">
+                                    </div>
+                                    <div class="slds-page-header__detail-block">
                                         <div class="slds-text-body_small slds-text-color_weak slds-truncate">Lorem Ipsum</div>
                                         <div class="slds-text-body_regular slds-truncate">Lorem ipsum</div>
-                                    </li>
-                                    <li class="slds-page-header__detail-block">
+                                    </div>
+                                    <div class="slds-page-header__detail-block">
                                         <div class="slds-text-body_small slds-text-color_weak slds-truncate">Last Job Run</div>
                                         <div class="slds-text-body_regular slds-truncate">Jun 25, 2026 2:45 PM</div>
-                                    </li>
-                                    <li class="slds-page-header__detail-block">
+                                    </div>
+                                    <div class="slds-page-header__detail-block">
                                         <div class="slds-text-body_small slds-text-color_weak slds-truncate">Last Job Status</div>
                                         <div class="slds-text-body_regular slds-truncate">
                                             <lightning-badge label="Succeeded" class="slds-badge_lightest"></lightning-badge>
                                         </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1524,6 +2066,66 @@
                                 </div>
                             </lightning-layout-item>
                         </lightning-layout>
+                        </div>
+
+                        <!-- Section: Data Quality of Unified Profiles -->
+                        <div class="oc-section slds-m-bottom_medium">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
+                                <lightning-icon icon-name="utility:shield" size="x-small" class="slds-m-right_x-small" style="--slds-c-icon-color-foreground-default: #2e844a;"></lightning-icon>
+                                <h2 class="slds-text-heading_small">Data Quality — Unified Profiles</h2>
+                                <lightning-badge label="Good" class="slds-m-left_small dq-status-badge--good"></lightning-badge>
+                                <lightning-helptext content="Quality metrics for unified profiles generated by this ruleset. Scores reflect field completeness, internal consistency, and uniqueness of resolved identities." icon-name="utility:info" class="slds-m-left_xx-small"></lightning-helptext>
+                            </div>
+                            <div class="slds-scoped-notification slds-media slds-media_center slds-scoped-notification_light slds-m-bottom_medium" role="status">
+                                <div class="slds-media__figure">
+                                    <lightning-icon icon-name="utility:check" size="small" alternative-text="Check" style="--slds-c-icon-color-foreground-default: #2e844a;"></lightning-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <p><strong>Profiles meet quality thresholds</strong> for Segmentation, Activation, Calculated Insights, and Einstein features. No blocking issues detected.</p>
+                                </div>
+                            </div>
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="slds-box kpi-box">
+                                        <div class="kpi-title-with-info">
+                                            <span class="slds-text-body_small slds-text-color_weak">Field Completeness</span>
+                                            <lightning-helptext content="Avg. % of key identity fields (name, email, phone, address) populated per unified profile." icon-name="utility:info"></lightning-helptext>
+                                        </div>
+                                        <div class="kpi-value-large">87%</div>
+                                        <div class="kpi-change-positive">+2.1%</div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="slds-box kpi-box">
+                                        <div class="kpi-title-with-info">
+                                            <span class="slds-text-body_small slds-text-color_weak">Data Consistency</span>
+                                            <lightning-helptext content="% of profiles with no conflicting values across matched source records (e.g. same email in multiple sources)." icon-name="utility:info"></lightning-helptext>
+                                        </div>
+                                        <div class="kpi-value-large">91%</div>
+                                        <div class="kpi-change-positive">+0.8%</div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="slds-box kpi-box">
+                                        <div class="kpi-title-with-info">
+                                            <span class="slds-text-body_small slds-text-color_weak">Profile Uniqueness</span>
+                                            <lightning-helptext content="% of unified profiles with a unique resolved identity — no suspected duplicate remains." icon-name="utility:info"></lightning-helptext>
+                                        </div>
+                                        <div class="kpi-value-large">99.2%</div>
+                                        <div class="kpi-change-positive">+0.3%</div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" padding="around-small">
+                                    <div class="slds-box kpi-box">
+                                        <div class="kpi-title-with-info">
+                                            <span class="slds-text-body_small slds-text-color_weak">Null Rate (Key Fields)</span>
+                                            <lightning-helptext content="% of unified profiles missing at least one high-priority identity field." icon-name="utility:info"></lightning-helptext>
+                                        </div>
+                                        <div class="kpi-value-large">13%</div>
+                                        <div class="kpi-change-negative">-1.4%</div>
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
                         </div>
 
                         <!-- Section 2: Trend Charts -->
@@ -1970,12 +2572,15 @@
         </div>
     </template>
 
-    <!-- Scenario Toggle Widget -->
-    <div class="scenario-fab">
-        <div class="scenario-fab__label">Scenario</div>
-        <div class="scenario-fab__pills">
-            <button class={scenario1BtnClass} onclick={handleScenario1}>V1</button>
-            <button class={scenario2BtnClass} onclick={handleScenario2}>V2</button>
+    <!-- Floating design version toggle — only on setup Step 1 -->
+    <template lwc:if={showVersionToggle}>
+        <div class="scenario-fab">
+            <span class="scenario-fab__label">Design</span>
+            <div class="scenario-fab__pills">
+                <button class={scenario1BtnClass} onclick={handleScenario1}>V1</button>
+                <button class={scenario2BtnClass} onclick={handleScenario2}>V2</button>
+            </div>
         </div>
-    </div>
+    </template>
+
 </template>

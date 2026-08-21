@@ -1,15 +1,19 @@
 import { LightningElement, track } from 'lwc';
 import PreviewResultsModal from 'ui/previewResultsModal';
+import CustomMatchRulesModal from 'ui/customMatchRulesModal';
 import { navigate } from '../../../router';
 
 export default class Ir266 extends LightningElement {
     @track scenario = 1; // 1 = Excellent, 2 = Needs Fixing
     @track selectedFix = null; // 'auto' | 'guided'
     @track showLandingPage = true; // Show landing page initially
+    @track currentTask = null; // 'determine' | 'loading' | 'setup'
+    @track selectedRulesetType = 'unify'; // 'unify' | 'prematched' | 'datakit'
     @track currentStep = 1; // 1=Select Unification, 2=Trusted Sources, 3=Match Rules, 4=Operate & Certify
     @track selectedRoute = null; // 'unify', 'mdm', 'datakit'
-    @track selectedStrategy = 'conservative'; // 'conservative', 'typical', 'loose', 'custom'
+    @track selectedStrategy = 'typical'; // 'conservative', 'typical', 'loose', 'custom'
     @track showSideNav = true;
+    @track sideNavExpanded = false;
     @track showChatPanel = false;
     @track estimatedCredits = 2450;
     @track showConfigSteps = false; // Only show config steps after clicking Next from step 0
@@ -31,8 +35,10 @@ export default class Ir266 extends LightningElement {
     @track isEditMode = false; // True when editing from record home
     @track caseSensitive = false;
     @track guidanceExpanded = true;
+    @track guideNavExpanded = true;
     @track expandedReconDmos = {};
-    @track jobRunMode = null; // 'automatic' | 'manual'
+    @track jobRunMode = 'automatic'; // 'automatic' | 'manual'
+    @track showOptionalInfo = false;
     @track pauseAutomaticRuns = false;
     @track jobFrequency = 'daily';
     // Track which contact point fields have been manually overridden
@@ -50,16 +56,124 @@ export default class Ir266 extends LightningElement {
         return !this.showSideNav;
     }
 
+    get sideNavClass() {
+        return this.sideNavExpanded ? 'side-nav-container' : 'side-nav-container side-nav-container_collapsed';
+    }
+
+    get sideNavToggleIcon() {
+        return this.sideNavExpanded ? 'utility:chevronleft' : 'utility:chevronright';
+    }
+
+    handleToggleSideNav() {
+        this.sideNavExpanded = !this.sideNavExpanded;
+    }
+
+    get isDetermineTask() {
+        return !this.showLandingPage && this.currentTask === 'determine';
+    }
+
+    get isLoadingTask() {
+        return !this.showLandingPage && this.currentTask === 'loading';
+    }
+
+    get isSetupTask() {
+        return !this.showLandingPage && this.currentTask === 'setup';
+    }
+
+    get progressStep0Class() {
+        if (this.isDetermineTask) return 'wizard-progress-item wizard-progress-item_active';
+        if (this.isSetupTask || this.isLoadingTask) return 'wizard-progress-item wizard-progress-item_completed';
+        return 'wizard-progress-item';
+    }
+    get progressStep1Class() {
+        if (this.isSetupTask && this.currentStep === 1) return 'wizard-progress-item wizard-progress-item_active';
+        if (this.isSetupTask && this.currentStep > 1) return 'wizard-progress-item wizard-progress-item_completed';
+        return 'wizard-progress-item';
+    }
+    get progressStep2Class() {
+        if (this.isSetupTask && this.currentStep === 2) return 'wizard-progress-item wizard-progress-item_active';
+        if (this.isSetupTask && this.currentStep > 2) return 'wizard-progress-item wizard-progress-item_completed';
+        return 'wizard-progress-item';
+    }
+    get progressStep3Class() {
+        if (this.isSetupTask && this.currentStep === 3) return 'wizard-progress-item wizard-progress-item_active';
+        if (this.isSetupTask && this.currentStep > 3) return 'wizard-progress-item wizard-progress-item_completed';
+        return 'wizard-progress-item';
+    }
+    get progressStep4Class() {
+        if (this.isSetupTask && this.currentStep === 4) return 'wizard-progress-item wizard-progress-item_active';
+        if (this.isSetupTask && this.currentStep > 4) return 'wizard-progress-item wizard-progress-item_completed';
+        return 'wizard-progress-item';
+    }
+    get progressStep5Class() {
+        if (this.isSetupTask && this.currentStep === 5) return 'wizard-progress-item wizard-progress-item_active';
+        if (this.isSetupTask && this.currentStep > 5) return 'wizard-progress-item wizard-progress-item_completed';
+        return 'wizard-progress-item';
+    }
+    get progressStep6Class() {
+        if (this.isSetupTask && this.currentStep === 6) return 'wizard-progress-item wizard-progress-item_active';
+        return 'wizard-progress-item';
+    }
+
+    get isUnifyTypeSelected() { return this.selectedRulesetType === 'unify'; }
+    get isPreMatchedTypeSelected() { return this.selectedRulesetType === 'prematched'; }
+    get isDatakitTypeSelected() { return this.selectedRulesetType === 'datakit'; }
+
+    get unifyTypeCardClass() {
+        return this.selectedRulesetType === 'unify'
+            ? 'determine-type-card determine-type-card_selected'
+            : 'determine-type-card';
+    }
+    get preMatchedTypeCardClass() {
+        return this.selectedRulesetType === 'prematched'
+            ? 'determine-type-card determine-type-card_selected'
+            : 'determine-type-card';
+    }
+    get datakitTypeCardClass() {
+        return this.selectedRulesetType === 'datakit'
+            ? 'determine-type-card determine-type-card_selected'
+            : 'determine-type-card';
+    }
+
     get showStepNavAndContent() {
-        return (!this.showLandingPage && !this.showOperateCertify) || this.isEditMode;
+        if (this.isEditMode) return true;
+        return !this.showLandingPage && !this.showOperateCertify && this.currentTask === 'setup';
     }
 
     get showOptionalSteps() {
         return !this.isEditMode;
     }
 
+    get showVersionToggle() {
+        return !this.showLandingPage && !this.showOperateCertify && !this.isEditMode
+            && (this.isDetermineTask || this.isLoadingTask || (this.isSetupTask && this.isStep1));
+    }
+
     get showStepNavColumn() {
         return this.showStepNavAndContent;
+    }
+
+    get showGuideNav() {
+        return this.showStepNavAndContent && this.guideNavExpanded;
+    }
+
+    get showGuideNavStrip() {
+        return this.showStepNavAndContent && !this.guideNavExpanded;
+    }
+
+    handleToggleGuideNav() {
+        this.guideNavExpanded = !this.guideNavExpanded;
+    }
+
+    handleGuideNavCollapseClick() {
+        if (!this.guideNavExpanded) {
+            this.guideNavExpanded = true;
+        }
+    }
+
+    handleCollapseGuideNav(event) {
+        event.stopPropagation();
+        this.guideNavExpanded = false;
     }
 
     get showRecommendationBanners() {
@@ -73,6 +187,14 @@ export default class Ir266 extends LightningElement {
 
     get isIndividualPickerSelected() {
         return true;
+    }
+
+    get householdPickerClass() {
+        return 'visual-picker-card';
+    }
+
+    get accountPickerClass() {
+        return 'visual-picker-card';
     }
 
     get pickerDisabledClass() {
@@ -145,33 +267,87 @@ export default class Ir266 extends LightningElement {
         return this.currentStep === 1 ? 'step-card step-card-active' : 'step-card';
     }
 
-    get step2CardClass() {
+    get step3CardClass() {
         return this.currentStep === 2 ? 'step-card step-card-active' : 'step-card';
     }
 
-    get step3CardClass() {
+    get step4CardClass() {
         return this.currentStep === 3 ? 'step-card step-card-active' : 'step-card';
     }
 
-    get step4CardClass() {
+    get step5CardClass() {
         return this.currentStep === 4 ? 'step-card step-card-active' : 'step-card';
     }
 
-    get step5CardClass() {
+    get step6CardClass() {
         return this.currentStep === 5 ? 'step-card step-card-active' : 'step-card';
     }
 
-    get step6CardClass() {
-        return this.currentStep === 6 ? 'step-card step-card-active' : 'step-card';
+    get guideNavClass() {
+        const base = 'qsl-step-nav';
+        return this.guideNavExpanded ? base : `${base} qsl-step-nav_collapsed`;
+    }
+
+    get step1NavRowClass() {
+        return this.currentStep === 1 ? 'flat-step-row flat-step-row_active' : 'flat-step-row';
+    }
+
+    get step3NavRowClass() {
+        return this.currentStep === 2 ? 'flat-step-row flat-step-row_active' : 'flat-step-row';
+    }
+
+    get step4NavRowClass() {
+        return this.currentStep === 3 ? 'flat-step-row flat-step-row_active' : 'flat-step-row';
+    }
+
+    get step5NavRowClass() {
+        return this.currentStep === 4 ? 'flat-step-row flat-step-row_active' : 'flat-step-row';
+    }
+
+    get step6NavRowClass() {
+        return this.currentStep === 5 ? 'flat-step-row flat-step-row_active' : 'flat-step-row';
+    }
+
+    get stepJobRunNavRowClass() {
+        return this.currentStep === 6 ? 'flat-step-row flat-step-row_active' : 'flat-step-row';
+    }
+
+    // Flat nav icon classes — purple when step is active, grey otherwise
+    get step1NavIconClass() {
+        return this.currentStep === 1 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+    get step2NavIconClass() {
+        return this.currentStep === 2 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+    get step3NavIconClass() {
+        return this.currentStep === 2 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+    get step4NavIconClass() {
+        return this.currentStep === 3 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+    get step5NavIconClass() {
+        return this.currentStep === 4 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+    get step6NavIconClass() {
+        return this.currentStep === 5 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+    get stepJobRunNavIconClass() {
+        return this.currentStep === 6 ? 'flat-step-icon flat-step-icon_active' : 'flat-step-icon flat-step-icon_default';
+    }
+
+    handleOptionalInfoShow() {
+        this.showOptionalInfo = true;
+    }
+    handleOptionalInfoHide() {
+        this.showOptionalInfo = false;
     }
 
     // Step visibility
-    // Step 1: Select Unification Type
-    // Step 2: Job Schedule (Required Setup)
-    // Step 3: Trusted Sources (Optional)
-    // Step 4: Generate Match Rules (Optional)
-    // Step 5: Generate Reconciliation Rules (Optional)
-    // Step 6: Set Up Filters (Optional)
+    // Step 1: General Details + Job Run Mode (Combined)
+    // Step 2: Trusted Sources (Optional)
+    // Step 3: Generate Match Rules (Optional)
+    // Step 4: Generate Reconciliation Rules (Optional)
+    // Step 5: Set Up Filters (Optional)
     get isStep1() {
         return this.currentStep === 1;
     }
@@ -181,27 +357,27 @@ export default class Ir266 extends LightningElement {
     }
 
     get isStep3() {
-        return this.currentStep === 3;
+        return this.currentStep === 2;
     }
 
     get isStep4() {
-        return this.currentStep === 4;
+        return this.currentStep === 3;
     }
 
     get isStep5() {
-        return this.currentStep === 5;
+        return this.currentStep === 4;
     }
 
     get isStep6() {
-        return this.currentStep === 6;
+        return this.currentStep === 5;
     }
 
     get isOperateCertify() {
-        return this.currentStep === 7;
+        return this.currentStep === 6;
     }
 
     get operateCertifyCardClass() {
-        return this.currentStep === 7 ? 'step-card step-card-active' : 'step-card';
+        return this.currentStep === 6 ? 'step-card step-card-active' : 'step-card';
     }
 
     // Route-specific logic
@@ -226,12 +402,16 @@ export default class Ir266 extends LightningElement {
     }
 
     get showMatchReconSteps() {
-        return this.selectedRoute !== 'mdm';
+        return true;
     }
 
     get currentStepTitle() {
+        if (this.isScenario2) {
+            const v2 = { 1: 'Entity Details', 2: 'Match Rules', 3: 'Reconciliation Rules', 4: 'Filters', 5: 'Job Run Schedule' };
+            return v2[this.currentStep] || '';
+        }
         const titles = {
-            1: 'Step 1: Select Unification Type',
+            1: 'Review our recommended setup on how you want to consolidate all your customer data into a reliable, usable source',
             2: 'Step 2: Trusted Sources',
             3: 'Step 3: Generate Match Rules',
             4: 'Resolution Job Results'
@@ -240,6 +420,10 @@ export default class Ir266 extends LightningElement {
     }
 
     get currentStepSubtitle() {
+        if (this.isScenario2) {
+            const v2 = { 1: 'Choose the type of records to consolidate and fill in details', 2: 'Set your matching strategy and review AI-recommended rules', 3: 'Configure how field conflicts are resolved in unified profiles', 4: 'Filter which source profiles this ruleset processes', 5: 'Choose when and how jobs run' };
+            return v2[this.currentStep] || '';
+        }
         const subtitles = {
             1: 'What records will this ruleset consolidate?',
             2: 'Map each DMO to its trusted data source.',
@@ -250,8 +434,8 @@ export default class Ir266 extends LightningElement {
     }
 
     get nextButtonLabel() {
-        // Step 4 (Match Rules): Create Ruleset
-        if (this.currentStep === 4) {
+        // Step 3 (Match Rules): Create Ruleset
+        if (this.currentStep === 3) {
             return 'Create Ruleset';
         }
         return 'Next';
@@ -295,6 +479,34 @@ export default class Ir266 extends LightningElement {
         ];
     }
 
+    get filterDmoOptions() {
+        return [
+            { label: 'Individual', value: 'individual' },
+            { label: 'Contact Point Address', value: 'cpa' },
+            { label: 'Contact Point Email', value: 'cpe' },
+            { label: 'Contact Point Phone', value: 'cpp' },
+        ];
+    }
+
+    get filterFieldOptions() {
+        return [
+            { label: 'First Name', value: 'firstName' },
+            { label: 'Last Name', value: 'lastName' },
+            { label: 'Email Address', value: 'email' },
+        ];
+    }
+
+    get filterOperatorOptions() {
+        return [
+            { label: 'Equals', value: 'eq' },
+            { label: 'Not Equals', value: 'neq' },
+            { label: 'Contains', value: 'contains' },
+            { label: 'Starts With', value: 'startsWith' },
+        ];
+    }
+
+    handlePreventDefault(event) { event.preventDefault(); }
+
     get dmoOptions() {
         return [
             { label: 'Individual DMO', value: 'individual' },
@@ -335,6 +547,33 @@ export default class Ir266 extends LightningElement {
         this.selectedRoute = route;
     }
 
+    handleNewRuleset() {
+        this.showLandingPage = false;
+        this.currentTask = 'determine';
+        this.selectedRulesetType = 'unify';
+        this.currentStep = 1;
+    }
+
+    handleRulesetTypeSelect(event) {
+        this.selectedRulesetType = event.currentTarget.dataset.type;
+    }
+
+    handleDetermineNext() {
+        this.currentTask = 'loading';
+        setTimeout(() => {
+            this.currentTask = 'setup';
+            this.currentStep = 1;
+            this.selectedRoute = this.selectedRulesetType;
+        }, 3000);
+    }
+
+    handleDetermineCancel() {
+        this.showLandingPage = true;
+        this.currentTask = null;
+        this.currentStep = 1;
+        this.selectedRoute = null;
+    }
+
     // Start configuration from landing page
     handleStartConfiguration() {
         if (!this.selectedRoute) {
@@ -342,18 +581,24 @@ export default class Ir266 extends LightningElement {
             return;
         }
         this.showLandingPage = false;
+        this.currentTask = 'setup';
         this.currentStep = 1;
     }
 
     // Navigate back to landing page
     handleGoToLandingPage() {
         this.showLandingPage = true;
+        this.currentTask = null;
         this.showOperateCertify = false;
         this.currentStep = 1;
         this.selectedRoute = null;
     }
 
     // Scenario toggle
+    get isScenario1() {
+        return this.scenario === 1;
+    }
+
     get isScenario2() {
         return this.scenario === 2;
     }
@@ -369,10 +614,12 @@ export default class Ir266 extends LightningElement {
     handleScenario1() {
         this.scenario = 1;
         this.selectedFix = null;
+        this.currentStep = 1;
     }
 
     handleScenario2() {
         this.scenario = 2;
+        this.currentStep = 1;
     }
 
     // Fix selection
@@ -495,7 +742,10 @@ export default class Ir266 extends LightningElement {
             this.isEditMode = false;
             this.showOperateCertify = true;
             this.showLandingPage = false;
+            this.currentTask = null;
         } else {
+            this.showLandingPage = false;
+            this.currentTask = null;
             this.showOperateCertify = true;
             this.showRulesetList = true;
         }
@@ -516,6 +766,7 @@ export default class Ir266 extends LightningElement {
 
     handleCancelStep() {
         this.showLandingPage = true;
+        this.currentTask = null;
         this.currentStep = 1;
         this.selectedRoute = null;
     }
@@ -554,17 +805,26 @@ export default class Ir266 extends LightningElement {
         this.caseSensitive = event.target.checked;
     }
 
+    get wizardStepProgressText() {
+        if (this.currentTask === 'setup') {
+            return `Step ${this.currentStep + 1} of 7`;
+        }
+        return '';
+    }
+
     handleBack() {
         if (this.currentStep > 1) {
             this.currentStep--;
+        } else {
+            this.currentTask = 'determine';
         }
     }
 
     handleNext() {
-        if (this.currentStep === 4) {
-            // Step 4 (Match Rules): create ruleset
+        if (this.currentStep === 3) {
+            // Step 3 (Match Rules): create ruleset
             this.showSuccessMessage('Congratulations! Your ruleset has been created successfully.');
-        } else if (this.currentStep < 4) {
+        } else if (this.currentStep < 3) {
             this.currentStep++;
         }
     }
@@ -912,5 +1172,16 @@ export default class Ir266 extends LightningElement {
             ]
         };
         return rules[this.selectedStrategy] || [];
+    }
+
+    handleSkipStep(event) {
+        event.preventDefault();
+        if (this.currentStep < 6) {
+            this.currentStep++;
+        }
+    }
+
+    async handleOpenCustomMatchRulesModal() {
+        await CustomMatchRulesModal.open({ size: 'medium', label: 'Create Custom Match Rules' });
     }
 }

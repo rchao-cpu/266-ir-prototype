@@ -1,0 +1,143 @@
+<template>
+    <lightning-modal-header label="Create Custom Match Rules">
+    </lightning-modal-header>
+
+    <lightning-modal-body>
+        <!-- Screen 1: Match Rule Instructions -->
+        <template lwc:if={isScreen1}>
+            <div class="cmr-screen1">
+                <p class="slds-text-body_regular slds-m-bottom_medium">
+                    Custom match rules let you define exactly how Identity Resolution identifies duplicate profiles across your data sources. Each rule specifies one or more field criteria — profiles that satisfy any rule will be merged into a single unified profile.
+                </p>
+
+                <div class="cmr-field-table-wrapper slds-m-bottom_large">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col"><div class="slds-truncate">Field Name</div></th>
+                                <th scope="col"><div class="slds-truncate">API Name</div></th>
+                                <th scope="col"><div class="slds-truncate">Data Model Object</div></th>
+                                <th scope="col"><div class="slds-truncate">Data Type</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={matchFieldRows} for:item="field">
+                                <tr key={field.id}>
+                                    <td><div class="slds-truncate">{field.fieldName}</div></td>
+                                    <td><div class="slds-truncate slds-text-color_weak">{field.apiName}</div></td>
+                                    <td><div class="slds-truncate">{field.dmo}</div></td>
+                                    <td><div class="slds-truncate"><lightning-badge label={field.dataType} class="cmr-type-badge"></lightning-badge></div></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="slds-grid slds-gutters slds-m-top_medium">
+                    <div class="slds-col slds-size_1-of-2">
+                        <div class="cmr-step-card">
+                            <div class="cmr-step-card__number">Step 1</div>
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Define match criteria</h3>
+                            <p class="slds-text-body_small slds-text-color_weak">Select the fields and match methods that form each rule. Add multiple criteria to require all of them to match (AND logic).</p>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <div class="cmr-step-card">
+                            <div class="cmr-step-card__number">Step 2</div>
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">Configure and save</h3>
+                            <p class="slds-text-body_small slds-text-color_weak">Review your rules, add additional rule sets if needed (OR logic between rules), then save to apply them to your ruleset.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Screen 2: Add Match Rules -->
+        <template lwc:if={isScreen2}>
+            <div class="cmr-screen2 slds-grid slds-gutters">
+                <!-- Left: Rules list -->
+                <div class="slds-col slds-size_8-of-12">
+                    <div class="cmr-rules-section">
+                        <div class="cmr-rules-header slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
+                            <h3 class="slds-text-heading_small slds-col">Match Rules</h3>
+                            <lightning-button
+                                label="+ Add Rule"
+                                variant="neutral"
+                                onclick={handleAddRule}>
+                            </lightning-button>
+                        </div>
+
+                        <template for:each={formattedRules} for:item="rule">
+                            <div key={rule.id} class="cmr-rule-row slds-m-bottom_small">
+                                <div class="cmr-rule-row__body slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                                    <div class="slds-col cmr-rule-row__label">
+                                        <span class="cmr-rule-row__number slds-text-body_small slds-text-color_weak">Rule {rule.ruleNumber}</span>
+                                        <p class="slds-text-body_regular cmr-rule-row__criteria">{rule.criteriaLabel}</p>
+                                    </div>
+                                    <div class="cmr-rule-row__actions slds-grid slds-gutters_xx-small">
+                                        <lightning-button-icon
+                                            icon-name="utility:edit"
+                                            variant="border-filled"
+                                            size="small"
+                                            alternative-text="Edit rule">
+                                        </lightning-button-icon>
+                                        <lightning-button-icon
+                                            icon-name="utility:delete"
+                                            variant="border-filled"
+                                            size="small"
+                                            alternative-text="Delete rule"
+                                            data-rule-id={rule.id}
+                                            onclick={handleDeleteRule}>
+                                        </lightning-button-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Right: FAQ sidebar -->
+                <div class="slds-col slds-size_4-of-12">
+                    <div class="cmr-faq-sidebar">
+                        <h3 class="slds-text-heading_small slds-m-bottom_medium">FAQ</h3>
+                        <template for:each={faqItems} for:item="faq">
+                            <div key={faq.id} class="cmr-faq-item slds-m-bottom_medium">
+                                <p class="cmr-faq-item__question">{faq.question}</p>
+                                <p class="cmr-faq-item__answer">{faq.answer}</p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <template lwc:if={isScreen1}>
+            <lightning-button
+                label="Cancel"
+                variant="neutral"
+                onclick={handleCancel}>
+            </lightning-button>
+            <lightning-button
+                label="Next"
+                variant="brand"
+                onclick={handleNext}
+                class="slds-m-left_x-small">
+            </lightning-button>
+        </template>
+        <template lwc:if={isScreen2}>
+            <lightning-button
+                label="Back"
+                variant="neutral"
+                onclick={handleBack}>
+            </lightning-button>
+            <lightning-button
+                label="Save Match Rules"
+                variant="brand"
+                onclick={handleSave}
+                class="slds-m-left_x-small">
+            </lightning-button>
+        </template>
+    </lightning-modal-footer>
+</template>
