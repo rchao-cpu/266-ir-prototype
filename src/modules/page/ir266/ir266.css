@@ -1387,8 +1387,9 @@ h1, h2, h3, h4, h5,
 
 /* Jump in with your first use case */
 .jump-in-section {
-    background-color: #f3f3f3;
+    background-color: #fff;
     border-radius: 0.75rem;
+    border: 1px solid #e0e0e0;
     padding: 0.5rem;
 }
 
