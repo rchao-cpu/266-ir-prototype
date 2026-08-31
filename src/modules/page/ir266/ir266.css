@@ -373,9 +373,16 @@ h1, h2, h3, h4, h5,
 }
 
 /* Landing Page */
+.full-height-grid {
+    height: 100vh;
+    overflow: hidden;
+}
+
 .landing-page-wrapper {
     flex: 1;
     min-width: 0;
+    overflow-y: auto;
+    height: 100vh;
 }
 
 .landing-page-container {
