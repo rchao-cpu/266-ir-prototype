@@ -145,8 +145,8 @@ export default class Ir266 extends LightningElement {
     }
 
     get showVersionToggle() {
-        return !this.showLandingPage && !this.showOperateCertify && !this.isEditMode
-            && (this.isDetermineTask || this.isLoadingTask || (this.isSetupTask && this.isStep1));
+        return this.showLandingPage || (!this.showOperateCertify && !this.isEditMode
+            && (this.isDetermineTask || this.isLoadingTask || (this.isSetupTask && this.isStep1)));
     }
 
     get showStepNavColumn() {
@@ -614,11 +614,13 @@ export default class Ir266 extends LightningElement {
     handleScenario1() {
         this.scenario = 1;
         this.selectedFix = null;
+        this.dataQualityExpanded = false;
         this.currentStep = 1;
     }
 
     handleScenario2() {
         this.scenario = 2;
+        this.dataQualityExpanded = true;
         this.currentStep = 1;
     }
 
