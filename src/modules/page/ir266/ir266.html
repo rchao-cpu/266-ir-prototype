@@ -638,12 +638,6 @@
                             </div>
                         </div>
                         </div><!-- end canvas-detail-panel__content -->
-                        <div class="canvas-detail-panel__footer">
-                            <lightning-button label="Cancel" variant="neutral" onclick={handleDetermineCancel}></lightning-button>
-                            <span class="wizard-panel__footer-progress">Step 1 of 7</span>
-                            <div class="wizard-panel__footer-spacer"></div>
-                            <lightning-button label="Next" variant="brand" onclick={handleDetermineNext}></lightning-button>
-                        </div>
                         </div><!-- end canvas-content-card -->
                     </div><!-- end canvas-detail-panel -->
                 </div><!-- end wizard-canvas-body -->
@@ -2527,14 +2521,20 @@
 
     </div>
 
-    <!-- Docked Footer (Step 3 initial setup) -->
+    <!-- Docked Footer (wizard navigation) -->
     <template lwc:if={showStep3DockedFooter}>
-        <div class="edit-docked-footer">
-            <div class="edit-docked-footer__actions">
+        <div class="edit-docked-footer edit-docked-footer_wizard">
+            <lightning-button
+                label="Cancel"
+                variant="neutral"
+                onclick={handleCancelStep}>
+            </lightning-button>
+            <span class="wizard-panel__footer-progress">{dockedFooterStepText}</span>
+            <div class="edit-docked-footer__right">
                 <lightning-button
-                    label="Cancel"
+                    label="Next"
                     variant="neutral"
-                    onclick={handleCancelStep}>
+                    onclick={handleDockedNext}>
                 </lightning-button>
                 <lightning-button
                     label="Create Ruleset"

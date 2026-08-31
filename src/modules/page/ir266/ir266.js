@@ -814,6 +814,19 @@ export default class Ir266 extends LightningElement {
         return '';
     }
 
+    get dockedFooterStepText() {
+        if (this.isDetermineTask) return 'Step 1 of 7';
+        return this.wizardStepProgressText;
+    }
+
+    handleDockedNext() {
+        if (this.isDetermineTask) {
+            this.handleDetermineNext();
+        } else {
+            this.handleNext();
+        }
+    }
+
     handleBack() {
         if (this.currentStep > 1) {
             this.currentStep--;
