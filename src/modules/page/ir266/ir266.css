@@ -1973,6 +1973,45 @@ h1, h2, h3, h4, h5,
 }
 .step-skip-link:hover { text-decoration: underline; }
 
+/* ── Determine sidebar info panel ── */
+.determine-picker-detail {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+    background: #f9f9f9;
+    padding: 1.25rem 1.5rem;
+    min-height: 16rem;
+}
+
+.determine-detail__heading {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #032d60;
+    margin: 0;
+}
+
+.determine-detail__section {
+    margin-bottom: 1rem;
+}
+
+.determine-detail__label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #706e6b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.375rem;
+}
+
+.determine-detail__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 10rem;
+}
+
 /* ── Image #63: entity type picker ── */
 .determine-new-layout {
     display: flex;
